@@ -1,0 +1,248 @@
+package com.example.samsung.calcul;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+public class MainActivity extends AppCompatActivity {
+    double dblResult;
+    double dblValue1;
+    double dblValue2;
+    ArrayList<Map<String, String>> liste = new ArrayList();
+    String op;
+    String regd;
+    String regf;
+    String regm;
+    String regt;
+    double res;
+    String[] result;
+    String resultString;
+    String strOperation;
+    TextView textCalc;
+    TextView textResult;
+    String tmp;
+    String tmpcalc;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        textResult = findViewById(R.id.textResult);
+        textCalc =  findViewById(R.id.textCalc);
+    }
+
+    public void btn0(View view) {
+        chiffreClick("0");
+    }
+
+    public void btnC(View view) {
+        this.textResult.setText("0");
+        this.textCalc.setText("0");
+        this.dblResult = 0.0d;
+        this.dblValue1 = 0.0d;
+        this.dblValue2 = 0.0d;
+        this.strOperation = "+";
+        this.tmp = "0";
+    }
+
+    public void btnHisto(View view) {
+        Intent hist = new Intent(this, HistoActivity.class);
+        hist.putExtra("liste", this.liste);
+        startActivity(hist);
+    }
+
+    public void btnDelete(View view) {
+        deleteClick();
+    }
+
+    public void btnPar(View view) {
+        paraClick();
+    }
+
+    public void btnPour(View view) {
+        operationClick("%");
+    }
+
+    public void btnDiv(View view) {
+        operationClick("/");
+    }
+
+    public void btn9(View view) {
+        chiffreClick("9");
+    }
+
+    public void btn8(View view) {
+        chiffreClick("8");
+    }
+
+    public void btn7(View view) {
+        chiffreClick("7");
+    }
+
+    public void btnMul(View view) {
+        operationClick("*");
+    }
+
+    public void btn4(View view) {
+        chiffreClick("4");
+    }
+
+    public void btn5(View view) {
+        chiffreClick("5");
+    }
+
+    public void btn6(View view) {
+        chiffreClick("6");
+    }
+
+    public void btnMoins(View view) {
+        operationClick("-");
+    }
+
+    public void btn1(View view) {
+        chiffreClick("1");
+    }
+
+    public void btn2(View view) {
+        chiffreClick("2");
+    }
+
+    public void btn3(View view) {
+        chiffreClick("3");
+    }
+
+    public void btnPlus(View view) {
+        operationClick("+");
+    }
+
+    public void btnPlusMoins(View view) {
+        plusmoinsClick();
+    }
+
+    public void btnVir(View view) {
+        chiffreClick(".");
+    }
+
+    public void chiffreClick(String strChiffre) {
+        if (textCalc.getText().equals("0")) {
+            textCalc.setText(strChiffre);
+        }
+            textCalc.setText(strChiffre);
+
+        /*TextView textView = textCalc;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(textCalc.getText());
+        stringBuilder.append(strChiffre);
+        textView.setText(stringBuilder.toString());*/
+    }
+
+    private void operationClick(String operateur) {
+        strOperation = operateur;
+        textCalc.setText(operateur);
+
+        /*TextView textView = this.textCalc;
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(this.textCalc.getText());
+        stringBuilder.append(this.strOperation);
+        textView.setText(stringBuilder.toString());*/
+    }
+
+    private void paraClick() {
+        tmpcalc = textCalc.getText().toString();
+        int parenthese_fermer = 0;
+        int parenthese_ouvert = 0;
+        for (char c : tmpcalc.toCharArray()) {
+            switch (c) {
+                case '(':
+                    parenthese_ouvert++;
+                    break;
+                case ')':
+                    parenthese_fermer++;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (tmpcalc.length() == 1 && tmpcalc.charAt(0) == '0') {
+            textCalc.setText("(");
+        } else if (Pattern.matches("^(.*[(+\\-/*])?$", tmpcalc)) {
+            textCalc.setText("(");
+
+        } else if (Pattern.matches("^.*\\(.*[\\d)]$", tmpcalc) && parenthese_ouvert > parenthese_fermer) {
+            textCalc.setText(")");
+
+        }
+    }
+
+    private void deleteClick() {
+        tmpcalc = textCalc.getText().toString();
+        if (tmpcalc.length() > 1) {
+            tmpcalc = tmpcalc.substring(0, tmpcalc.length() - 1);
+        } else if (tmpcalc.length() == 1) {
+            tmpcalc = "0";
+        }
+        textCalc.setText(tmpcalc);
+    }
+
+    private void plusmoinsClick() {
+        tmpcalc = textCalc.getText().toString();
+        if (tmpcalc.length() >= 1 && !tmpcalc.substring(1).equals("0")) {
+            if (tmpcalc.charAt(0) != '-') {
+                tmpcalc= "-" + tmpcalc;
+
+                /*StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("-");
+                stringBuilder.append(this.textCalc.getText());
+                this.tmpcalc = stringBuilder.toString();*/
+
+            } else {
+                tmpcalc = tmpcalc.substring(1);
+            }
+        }
+        textCalc.setText(tmpcalc);
+    }
+
+    public void btnEgal(View view) {
+        String resultString = textCalc.getText().toString();
+        regt = "(?<=[^\\d.])(?=\\d)|(?<=\\d)(?=[^\\d.])";
+        regd = "-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
+        regm = "\\+?-?\\*?/?-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
+
+        /*StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("^");
+        stringBuilder.append(regd);
+        stringBuilder.append("(");
+        stringBuilder.append(regm);
+        stringBuilder.append(")*$");
+        regf = stringBuilder.toString();*/
+
+        result = textCalc.getText().toString().split(regt);
+        op = null;
+        res = 0.0d;
+        for (String s : result) {
+            if (!(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/"))) {
+                if (!s.equals("%")) {
+                    if (op == null) {
+                        res = Double.parseDouble(s);
+                    } else if (op.equals("+")) {
+                        res += Double.parseDouble(s);
+                    } else if (op.equals("-")) {
+                        res -= Double.parseDouble(s);
+                    } else if (op.equals("*")) {
+                        this.res *= Double.parseDouble(s);
+                    } else if (op.equals("/")) {
+                        res /= Double.parseDouble(s);
+                    } else if (op.equals("%")) {
+                        res /= 100.0d;
+                    }
+                }
+            }
+            op = s;
+        }
+        textResult.setText(String.valueOf(res));
+    }
+}
