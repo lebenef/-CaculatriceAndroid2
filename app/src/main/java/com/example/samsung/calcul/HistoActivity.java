@@ -14,50 +14,62 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HistoActivity extends AppCompatActivity {
 
     ListView histoList;
     ArrayList<Map<String, String>> liste;
     SimpleAdapter adapter;
+    Bdd bdd;
+    ExecutorService executor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_histo);
-
+        histoList = findViewById(R.id.histo);
         Toolbar  toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        histoList = findViewById(R.id.histo);
+        executor = Executors.newSingleThreadExecutor();
 
-        liste = (ArrayList<Map<String, String>>) getIntent().getSerializableExtra("liste");
-
-    /*   for(int i=0; i<10;i++)
-        {
-            HashMap<String, String> hashMap = new HashMap<>();
-            hashMap.put("calc", Integer.toString(i) + "+" + Integer.toString(i));
-            hashMap.put("res", Integer.toString(i*2));
-            liste.add(hashMap);
-        }
-        */
+        liste = new ArrayList<>();
 
         String[] from = {"calc", "res"};
         int[] to = {R.id.itemCalc, R.id.itemResult};
 
-         adapter= new SimpleAdapter(this,liste, R.layout.item_histo, from, to);
+        adapter= new SimpleAdapter(this,liste, R.layout.item_histo, from, to);
+
+        bdd = Bdd.getInstance(getApplicationContext());
+
+        bdd.data().getAll().observe(this, histories -> {
+
+            if (histories != null) {
+                for(Data data : histories)
+                {
+                    HashMap<String, String> hashMap = new HashMap<>();
+
+                    hashMap.put("calc", data.calcul);
+                    hashMap.put("res", data.resultat);
+                    liste.add(hashMap);
+                }
+                adapter.notifyDataSetChanged();
+            }
+            
+        });
 
         histoList.setAdapter(adapter);
-
-
-
 
     }
 
     public void btnClear(View view) {
 
-        liste.clear();
+        //liste.clear();
+        executor.execute(() -> bdd.data().deleteAll());
+
         this.recreate();
 
     }

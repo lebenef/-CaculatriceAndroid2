@@ -6,13 +6,15 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class Data {
-
-    @ColumnInfo
-    String calcul;
-    @ColumnInfo
-    String resultat;
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     int id;
+
+    @ColumnInfo(name = "calcul")
+    String calcul;
+
+    @ColumnInfo(name = "resultat")
+    String resultat;
+
 
 
 

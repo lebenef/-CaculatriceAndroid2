@@ -15,6 +15,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 import javax.script.ScriptEngine;
@@ -41,10 +43,10 @@ public class MainActivity extends AppCompatActivity {
     String tmp;
     String tmpcalc;
 
-    ArrayList<Map<String, String>> liste = new ArrayList();
+    ArrayList<Map<String, String>> liste = new ArrayList<>();
     HashMap<String, String> hashMap = new HashMap<>();
-
-
+    Bdd bdd;
+    ExecutorService executor;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textResult = findViewById(R.id.textResult);
         textCalc =  findViewById(R.id.textCalc);
+        bdd = Bdd.getInstance(getApplicationContext());
+        executor = Executors.newSingleThreadExecutor();
     }
 
 
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void btnHisto(View view) {
         Intent hist = new Intent(this, HistoActivity.class);
-        hist.putExtra("liste", this.liste);
+        //hist.putExtra("liste", this.liste);
         startActivity(hist);
     }
 
@@ -285,9 +289,14 @@ public class MainActivity extends AppCompatActivity {
 
         textResult.setText(resultString);
 
-        hashMap.put("calc", calcString);
-        hashMap.put("res", resultString);
-        liste.add(hashMap);
+       // hashMap.put("calc", calcString);
+      //  hashMap.put("res", resultString);
+
+        Data data = new Data();
+        data.calcul = calcString;
+        data.resultat = resultString;
+
+        executor.execute(() -> bdd.data().insertData(data));
 
 
 

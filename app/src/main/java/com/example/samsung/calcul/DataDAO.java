@@ -1,5 +1,6 @@
 package com.example.samsung.calcul;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -15,6 +16,9 @@ public interface DataDAO {
     @Delete
     void deleteData(Data d);
 
+    @Query("delete from Data")
+    void deleteAll();
+
     @Query("select * from Data")
-    List<Data> getAll();
+    LiveData<List<Data>> getAll();
 }
