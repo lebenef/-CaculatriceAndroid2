@@ -1,19 +1,32 @@
 package com.example.samsung.calcul;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+
+import java.io.BufferedWriter;
+import java.io.StringWriter;
+import java.io.FileWriter;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 public class MainActivity extends AppCompatActivity {
     double dblResult;
     double dblValue1;
     double dblValue2;
-    ArrayList<Map<String, String>> liste = new ArrayList();
+
+
     String op;
     String regd;
     String regf;
@@ -28,12 +41,20 @@ public class MainActivity extends AppCompatActivity {
     String tmp;
     String tmpcalc;
 
+    ArrayList<Map<String, String>> liste = new ArrayList();
+    HashMap<String, String> hashMap = new HashMap<>();
+
+
+
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textResult = findViewById(R.id.textResult);
         textCalc =  findViewById(R.id.textCalc);
     }
+
+
 
     public void btn0(View view) {
         chiffreClick("0");
@@ -131,8 +152,9 @@ public class MainActivity extends AppCompatActivity {
         if (textCalc.getText().equals("0")) {
             textCalc.setText(strChiffre);
         }
-            textCalc.setText(strChiffre);
-
+        else {
+            textCalc.setText(textCalc.getText() + strChiffre);
+        }
         /*TextView textView = textCalc;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(textCalc.getText());
@@ -142,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void operationClick(String operateur) {
         strOperation = operateur;
-        textCalc.setText(operateur);
+        textCalc.setText(textCalc.getText()+operateur);
 
         /*TextView textView = this.textCalc;
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(this.textCalc.getText());
+        stringBuilder.append(this.);
         stringBuilder.append(this.strOperation);
         textView.setText(stringBuilder.toString());*/
     }
@@ -170,13 +192,15 @@ public class MainActivity extends AppCompatActivity {
         if (tmpcalc.length() == 1 && tmpcalc.charAt(0) == '0') {
             textCalc.setText("(");
         } else if (Pattern.matches("^(.*[(+\\-/*])?$", tmpcalc)) {
-            textCalc.setText("(");
+            textCalc.setText(textCalc.getText()+"(");
 
         } else if (Pattern.matches("^.*\\(.*[\\d)]$", tmpcalc) && parenthese_ouvert > parenthese_fermer) {
-            textCalc.setText(")");
+            textCalc.setText(textCalc.getText()+")");
 
         }
     }
+
+
 
     private void deleteClick() {
         tmpcalc = textCalc.getText().toString();
@@ -207,10 +231,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnEgal(View view) {
-        String resultString = textCalc.getText().toString();
+        //String resultString;
+        String calcString = textCalc.getText().toString();
+
         regt = "(?<=[^\\d.])(?=\\d)|(?<=\\d)(?=[^\\d.])";
         regd = "-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
         regm = "\\+?-?\\*?/?-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
+        //regf = "^"regd"("regm")*$";
 
         /*StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("^");
@@ -220,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
         stringBuilder.append(")*$");
         regf = stringBuilder.toString();*/
 
-        result = textCalc.getText().toString().split(regt);
+    /*    result = textCalc.getText().toString().split(regt);
         op = null;
         res = 0.0d;
         for (String s : result) {
@@ -243,6 +270,29 @@ public class MainActivity extends AppCompatActivity {
             }
             op = s;
         }
-        textResult.setText(String.valueOf(res));
+
+        resultString = Double.toString(res);*/
+
+
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("rhino");
+        try {
+              resultString = engine.eval(calcString).toString();
+        } catch (ScriptException e) {
+           resultString = "Erreur";
+        }
+
+
+        textResult.setText(resultString);
+
+        hashMap.put("calc", calcString);
+        hashMap.put("res", resultString);
+        liste.add(hashMap);
+
+
+
+
+
+
     }
 }
