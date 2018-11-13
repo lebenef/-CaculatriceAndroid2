@@ -34,10 +34,10 @@
         android:text="@string/result"
         android:textSize="30sp"
         android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/buttonDelete"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="49dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <android.support.constraint.Guideline
         android:id="@+id/top"
@@ -70,334 +70,403 @@
     <Button
         android:id="@+id/button9"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn9"
         android:text="@string/_9"
-        tools:layout_editor_absoluteX="392dp"
-        tools:layout_editor_absoluteY="143dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button6"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button8"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
-        android:id="@+id/button34"
+        android:id="@+id/buttonLog"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="log"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCar"
+        app:layout_constraintHeight_percent="0.11"
         app:layout_constraintLeft_toRightOf="@+id/left"
-        tools:layout_editor_absoluteY="191dp" />
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonEgal"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@android:color/holo_blue_dark"
         android:onClick="btnEgal"
         android:text="@string/ega"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/bot"
-        app:layout_constraintRight_toLeftOf="@+id/right" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonVir"
+        app:layout_constraintRight_toLeftOf="@+id/right"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonPour"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnPour"
         android:text="@string/pou"
         android:textColor="@android:color/holo_blue_dark"
-        tools:layout_editor_absoluteX="392dp"
-        tools:layout_editor_absoluteY="95dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button9"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonPar"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
-        android:id="@+id/button31"
+        android:id="@+id/buttonCos"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="cos"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLog"
+        app:layout_constraintHeight_percent="0.11"
         app:layout_constraintLeft_toRightOf="@+id/left"
-        tools:layout_editor_absoluteY="143dp" />
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button8"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn8"
         android:text="@string/_8"
-        tools:layout_editor_absoluteX="304dp"
-        tools:layout_editor_absoluteY="143dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button7"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonMoins"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnMoins"
         android:text="@string/moi"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonPlus"
-        app:layout_constraintRight_toLeftOf="@+id/right" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button6"
+        app:layout_constraintRight_toLeftOf="@+id/right"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button1"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn1"
         android:text="@string/_1"
-        tools:layout_editor_absoluteX="216dp"
-        tools:layout_editor_absoluteY="239dp" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonPlusMoins"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonPui"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonPlusMoins"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnPlusMoins"
         android:text="@string/pm"
         app:layout_constraintBottom_toTopOf="@+id/bot"
-        tools:layout_editor_absoluteX="216dp" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonE"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
-        android:id="@+id/button39"
+        android:id="@+id/buttonE"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="e"
         android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/bot"
-        tools:layout_editor_absoluteX="128dp" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonPi"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button2"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn2"
         android:text="@string/_2"
-        tools:layout_editor_absoluteX="304dp"
-        tools:layout_editor_absoluteY="239dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button0"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button1"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button6"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn6"
         android:text="@string/_6"
-        tools:layout_editor_absoluteX="392dp"
-        tools:layout_editor_absoluteY="191dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button5"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonPlus"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnPlus"
         android:text="@string/plu"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonEgal"
-        app:layout_constraintRight_toLeftOf="@+id/right" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button3"
+        app:layout_constraintRight_toLeftOf="@+id/right"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button5"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn5"
         android:text="@string/_5"
-        tools:layout_editor_absoluteX="304dp"
-        tools:layout_editor_absoluteY="191dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button4"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
-        android:id="@+id/button37"
+        android:id="@+id/buttonCar"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="X²"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/buttonPi"
+        app:layout_constraintHeight_percent="0.11"
         app:layout_constraintLeft_toRightOf="@+id/left"
-        tools:layout_editor_absoluteY="239dp" />
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonMul"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnMul"
         android:text="@string/mul"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonMoins"
-        app:layout_constraintRight_toLeftOf="@+id/right" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button9"
+        app:layout_constraintRight_toLeftOf="@+id/right"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
-        android:id="@+id/button27"
+        android:id="@+id/buttonRac"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="√"
         android:textAllCaps="false"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="95dp" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonTan"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonSin"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonVir"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnVir"
         android:text="@string/vir"
         app:layout_constraintBottom_toTopOf="@+id/bot"
-        tools:layout_editor_absoluteX="392dp" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button0"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonPar"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnPar"
         android:text="@string/para"
         android:textColor="@android:color/holo_blue_dark"
-        tools:layout_editor_absoluteX="304dp"
-        tools:layout_editor_absoluteY="95dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button8"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonC"
+        app:layout_constraintWidth_percent="0.166" />
 
     <ImageButton
         android:id="@+id/buttonDelete"
         style="@android:style/Widget.DeviceDefault.Light.ImageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnDelete"
         android:tint="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonDiv"
+        app:layout_constraintHeight_percent="0.11"
         app:layout_constraintRight_toLeftOf="@+id/right"
+        app:layout_constraintWidth_percent="0.166"
         app:srcCompat="@android:drawable/ic_input_delete" />
 
     <Button
         android:id="@+id/button33"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="1/x"
         android:textAllCaps="false"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="191dp" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonPui"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonLog"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
-        android:id="@+id/button36"
+        android:id="@+id/buttonPui"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="Xy"
         android:textAllCaps="false"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="239dp" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonE"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonCar"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button7"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn7"
         android:text="@string/_7"
-        tools:layout_editor_absoluteX="216dp"
-        tools:layout_editor_absoluteY="143dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonTan"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
-        android:id="@+id/button28"
+        android:id="@+id/buttonSin"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="rad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="sin"
         android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/buttonCos"
+        app:layout_constraintHeight_percent="0.11"
         app:layout_constraintLeft_toRightOf="@+id/left"
-        tools:layout_editor_absoluteY="95dp" />
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button4"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn4"
         android:text="@string/_4"
-        tools:layout_editor_absoluteX="216dp"
-        tools:layout_editor_absoluteY="191dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button1"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button33"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonPi"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="π"
         android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/bot"
-        app:layout_constraintLeft_toRightOf="@+id/left" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/left"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonDiv"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnDiv"
         android:text="@string/div"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonMul"
-        app:layout_constraintRight_toLeftOf="@+id/right" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonPour"
+        app:layout_constraintRight_toLeftOf="@+id/right"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button3"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn3"
         android:text="@string/_3"
-        tools:layout_editor_absoluteX="392dp"
-        tools:layout_editor_absoluteY="239dp" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonVir"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/button2"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonC"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btnC"
         android:text="@string/c"
         android:textAllCaps="true"
         android:textColor="@android:color/holo_red_dark"
-        tools:layout_editor_absoluteX="216dp"
-        tools:layout_editor_absoluteY="95dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button7"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonRac"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/buttonHisto"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_weight="2"
         android:onClick="btnHisto"
         android:text="@string/historique"
         android:textColor="@android:color/darker_gray"
-        tools:layout_editor_absoluteX="24dp"
-        tools:layout_editor_absoluteY="43dp" />
+        app:layout_constraintBottom_toTopOf="@+id/buttonSin"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/left"
+        app:layout_constraintWidth_percent="0.30" />
 
     <Button
-        android:id="@+id/button30"
+        android:id="@+id/buttonTan"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:text="tan"
         android:textAllCaps="false"
-        tools:layout_editor_absoluteX="128dp"
-        tools:layout_editor_absoluteY="143dp" />
+        app:layout_constraintBottom_toTopOf="@+id/button33"
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonCos"
+        app:layout_constraintWidth_percent="0.166" />
 
     <Button
         android:id="@+id/button0"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:onClick="btn0"
         android:text="@string/_0"
         app:layout_constraintBottom_toTopOf="@+id/bot"
-        tools:layout_editor_absoluteX="304dp" />
+        app:layout_constraintHeight_percent="0.11"
+        app:layout_constraintLeft_toRightOf="@+id/buttonPlusMoins"
+        app:layout_constraintWidth_percent="0.166" />
 
 </android.support.constraint.ConstraintLayout>
