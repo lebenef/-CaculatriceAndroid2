@@ -9,18 +9,18 @@
 
     <TextView
         android:id="@+id/textCalc"
-        android:layout_width="752dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
         android:text="@string/calc"
         android:textSize="30sp"
         android:textStyle="bold"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+        app:layout_constraintLeft_toRightOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/guideline7" />
 
     <TextView
         android:id="@+id/textResult"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
         android:paddingRight="32dp"
@@ -29,8 +29,8 @@
         android:textStyle="bold|italic"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/buttonDelete"
-        app:layout_constraintWidth_percent="0.25"
-        tools:layout_editor_absoluteX="568dp" />
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonHisto"
@@ -42,8 +42,8 @@
         android:text="@string/historique"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/buttonC"
-        app:layout_constraintWidth_percent="0.30"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintLeft_toRightOf="@+id/guideline3"
+        app:layout_constraintWidth_percent="0.30" />
 
     <ImageButton
         android:id="@+id/buttonDelete"
@@ -53,9 +53,9 @@
         android:onClick="btnDelete"
         android:tint="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonDiv"
-        app:layout_constraintWidth_percent="0.24"
-        app:srcCompat="@android:drawable/ic_input_delete"
-        tools:layout_editor_absoluteX="576dp" />
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.25"
+        app:srcCompat="@android:drawable/ic_input_delete" />
 
 
     <Button
@@ -67,8 +67,8 @@
         android:text="@string/c"
         android:textColor="@android:color/holo_red_dark"
         app:layout_constraintBottom_toTopOf="@+id/button7"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintLeft_toRightOf="@+id/guideline3"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonPar"
@@ -79,8 +79,8 @@
         android:text="@string/para"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/button8"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="193dp" />
+        app:layout_constraintLeft_toRightOf="@+id/buttonC"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonPour"
@@ -91,20 +91,21 @@
         android:text="@string/pou"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/button9"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="378dp" />
+        app:layout_constraintLeft_toRightOf="@+id/buttonPar"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonDiv"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="185dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="btnDiv"
         android:text="@string/div"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonMul"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="569dp" />
+        app:layout_constraintLeft_toRightOf="@+id/buttonPour"
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button8"
@@ -114,8 +115,8 @@
         android:onClick="btn8"
         android:text="@string/_8"
         app:layout_constraintBottom_toTopOf="@+id/button5"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="193dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button7"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button6"
@@ -125,21 +126,19 @@
         android:onClick="btn6"
         android:text="@string/_6"
         app:layout_constraintBottom_toTopOf="@+id/button3"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="378dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button5"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonPlusMoins"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:onClick="btnPlusMoins"
         android:text="@string/pm"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.24" />
+        app:layout_constraintLeft_toRightOf="@+id/guideline3"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonVir"
@@ -150,8 +149,8 @@
         android:onClick="btnVir"
         android:text="@string/vir"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toEndOf="@+id/button0"
-        app:layout_constraintWidth_percent="0.24" />
+        app:layout_constraintRight_toLeftOf="@+id/buttonEgal"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button1"
@@ -161,8 +160,8 @@
         android:onClick="btn1"
         android:text="@string/_1"
         app:layout_constraintBottom_toTopOf="@+id/buttonPlusMoins"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintLeft_toRightOf="@+id/guideline3"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button3"
@@ -172,8 +171,8 @@
         android:onClick="btn3"
         android:text="@string/_3"
         app:layout_constraintBottom_toTopOf="@+id/buttonVir"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="378dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button2"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button0"
@@ -184,8 +183,9 @@
         android:onClick="btn0"
         android:text="@string/_0"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toEndOf="@+id/buttonPlusMoins"
-        app:layout_constraintWidth_percent="0.24" />
+        app:layout_constraintLeft_toRightOf="@+id/buttonPlusMoins"
+        app:layout_constraintRight_toLeftOf="@+id/buttonVir"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button7"
@@ -195,25 +195,22 @@
         android:onClick="btn7"
         android:text="@string/_7"
         app:layout_constraintBottom_toTopOf="@+id/button4"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintLeft_toRightOf="@+id/guideline3"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonEgal"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
+        android:layout_width="92dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:background="@android:color/holo_blue_dark"
         android:onClick="btnEgal"
         android:text="@string/ega"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonVir"
-        app:layout_constraintWidth_percent="0.24" />
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button4"
@@ -223,32 +220,34 @@
         android:onClick="btn4"
         android:text="@string/_4"
         app:layout_constraintBottom_toTopOf="@+id/button1"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="8dp" />
+        app:layout_constraintLeft_toRightOf="@+id/guideline3"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonPlus"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="184dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="btnPlus"
         android:text="@string/plu"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonEgal"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="569dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button3"
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonMul"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="185dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="btnMul"
         android:text="@string/mul"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonMoins"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="569dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button9"
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button9"
@@ -258,8 +257,8 @@
         android:onClick="btn9"
         android:text="@string/_9"
         app:layout_constraintBottom_toTopOf="@+id/button6"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="378dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button8"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button5"
@@ -269,8 +268,8 @@
         android:onClick="btn5"
         android:text="@string/_5"
         app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="193dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button4"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/button2"
@@ -280,21 +279,22 @@
         android:onClick="btn2"
         android:text="@string/_2"
         app:layout_constraintBottom_toTopOf="@+id/button0"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="193dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button1"
+        app:layout_constraintWidth_percent="0.25" />
 
     <Button
         android:id="@+id/buttonMoins"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="185dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:onClick="btnMoins"
         android:text="@string/moi"
         android:textColor="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonPlus"
-        app:layout_constraintWidth_percent="0.24"
-        tools:layout_editor_absoluteX="569dp" />
+        app:layout_constraintLeft_toRightOf="@+id/button6"
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.25" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -302,5 +302,33 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.90" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.05" />
 
 </android.support.constraint.ConstraintLayout>
