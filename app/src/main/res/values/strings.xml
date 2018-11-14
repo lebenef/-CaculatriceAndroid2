@@ -24,4 +24,19 @@
     <string name="calc">0</string>
     <string name="historique">Historique</string>
     <string name="todo">TODO</string>
+    <string name="log">log</string>
+    <string name="cos">cos</string>
+    <string name="e">e</string>
+    <string name="x">X²</string>
+    <string name="ln">ln</string>
+    <string name="xy">Xy</string>
+    <string name="sin">sin</string>
+    <string name="pi">π</string>
+    <string name="tan">tan</string>
+    <string name="rac">√</string>
+    <string name="mod">mod</string>
+    <string name="fact">x!</string>
+    <string name="pgcd">pgcd</string>
+    <string name="log2">log2</string>
+    <string name="rad">rad</string>
 </resources>

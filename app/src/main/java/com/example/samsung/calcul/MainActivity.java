@@ -1,5 +1,6 @@
 package com.example.samsung.calcul;
 
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.io.FileWriter;
+import org.mariuszgromada.math.mxparser.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,6 +154,57 @@ public class MainActivity extends AppCompatActivity {
         chiffreClick(".");
     }
 
+    public void btnSin(View view) {
+        operationClick("sin(");
+    }
+    public void btnCos(View view) {
+        operationClick("cos(");
+    }
+    public void btnTan(View view) {
+        operationClick("tan(");
+    }
+    public void btnLog(View view) {
+        operationClick("log(");
+    }
+    public void btnLog2(View view) {
+        operationClick("log2(");
+    }
+    public void btnLn(View view) {
+        operationClick("ln(");
+    }
+    public void btnE(View view) {
+        operationClick("e");
+    }
+    public void btnPi(View view) {
+        operationClick("pi");
+    }
+    public void btnRac(View view) {
+        operationClick("sqrt(");
+    }
+    public void btnCar(View view) {
+        operationClick("^(2)");
+    }
+    public void btnPui(View view) {
+        operationClick("^(");
+    }
+    public void btnGcd(View view) {
+        operationClick("gcd(");
+    }
+
+
+    public void btnRad(View view) {
+        operationClick("rad(");
+    }
+
+    public void btnMod(View view) {
+        operationClick("#");
+    }
+
+    public void btnFac(View view) {
+        operationClick("!");
+    }
+
+
     public void chiffreClick(String strChiffre) {
         if (textCalc.getText().equals("0")) {
             textCalc.setText(strChiffre);
@@ -168,8 +221,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void operationClick(String operateur) {
         strOperation = operateur;
-        textCalc.setText(textCalc.getText()+operateur);
+        tmpcalc = textCalc.getText().toString();
 
+        if (tmpcalc == "0") {
+            if (operateur == "/" || operateur == "*" || operateur == "+") {
+                textCalc.setText(tmpcalc);
+            } else {
+                textCalc.setText(operateur);
+            }
+        }
+        else {
+
+            textCalc.setText(textCalc.getText() + operateur);
+        }
         /*TextView textView = this.textCalc;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(this.);
@@ -278,26 +342,28 @@ public class MainActivity extends AppCompatActivity {
         resultString = Double.toString(res);*/
 
 
-        ScriptEngineManager manager = new ScriptEngineManager();
+        /*ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine engine = manager.getEngineByName("rhino");
         try {
               resultString = engine.eval(calcString).toString();
         } catch (ScriptException e) {
            resultString = "Erreur";
-        }
+        }*/
 
+        Expression e = new Expression(calcString);
+        resultString = Double.toString(e.calculate());
 
         textResult.setText(resultString);
 
        // hashMap.put("calc", calcString);
       //  hashMap.put("res", resultString);
+        if(resultString != "NaN") {
+            Data data = new Data();
+            data.calcul = calcString;
+            data.resultat = resultString;
 
-        Data data = new Data();
-        data.calcul = calcString;
-        data.resultat = resultString;
-
-        executor.execute(() -> bdd.data().insertData(data));
-
+            executor.execute(() -> bdd.data().insertData(data));
+        }
 
 
 
