@@ -67,13 +67,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnC(View view) {
-        this.textResult.setText("0");
-        this.textCalc.setText("0");
-        this.dblResult = 0.0d;
-        this.dblValue1 = 0.0d;
-        this.dblValue2 = 0.0d;
-        this.strOperation = "+";
-        this.tmp = "0";
+        textResult.setText("0");
+        textCalc.setText(null);
+
     }
 
     public void btnHisto(View view) {
@@ -206,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void chiffreClick(String strChiffre) {
-        if (textCalc.getText().equals("0")) {
+        if (textCalc.getText().equals(null)) {
             textCalc.setText(strChiffre);
         }
         else {
@@ -223,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         strOperation = operateur;
         tmpcalc = textCalc.getText().toString();
 
-        if (tmpcalc == "0") {
+        if (tmpcalc == null) {
             if (operateur == "/" || operateur == "*" || operateur == "+") {
                 textCalc.setText(tmpcalc);
             } else {
@@ -275,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         if (tmpcalc.length() > 1) {
             tmpcalc = tmpcalc.substring(0, tmpcalc.length() - 1);
         } else if (tmpcalc.length() == 1) {
-            tmpcalc = "0";
+            tmpcalc = null;
         }
         textCalc.setText(tmpcalc);
     }

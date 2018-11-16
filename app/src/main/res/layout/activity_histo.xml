@@ -11,38 +11,42 @@
         android:layout_height="wrap_content"
         android:background="@android:color/holo_blue_dark"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        android:visibility="visible" />
+        android:theme="?attr/actionBarTheme" />
 
+    <Button
+        android:id="@+id/buttonReturn"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/ic_menu_revert"
+        android:onClick="btnReturn"
+        app:layout_constraintRight_toRightOf="@+id/toolbar"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="top|right">
-
-        <Button
-            android:id="@+id/buttonClear"
-            style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_delete"
-            android:onClick="btnClear" />
-
-        <Button
-            android:id="@+id/buttonReturn"
-            style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/ic_menu_revert"
-            android:onClick="btnReturn" />
-    </TableRow>
+    <Button
+        android:id="@+id/buttonClear"
+        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/ic_menu_delete"
+        android:onClick="btnClear"
+        app:layout_constraintRight_toLeftOf="@+id/buttonReturn"
+        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <ListView
         android:id="@+id/histo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
-        android:headerDividersEnabled="false"
-        android:longClickable="false"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+    </ListView>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintGuide_percent="1" />
 </android.support.constraint.ConstraintLayout>
