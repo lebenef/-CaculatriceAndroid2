@@ -78,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(hist);
     }
 
+    public void btnGraph(View view) {
+        Intent graph = new Intent(this, GraphActivity.class);
+        //hist.putExtra("liste", this.liste);
+        startActivity(graph);
+    }
+
     public void btnDelete(View view) {
         deleteClick();
     }

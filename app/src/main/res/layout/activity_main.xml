@@ -44,6 +44,19 @@
         app:layout_constraintLeft_toRightOf="@+id/guideline3"
         app:layout_constraintWidth_percent="0.30" />
 
+    <Button
+        android:id="@+id/buttonGraph"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:onClick="btnGraph"
+        android:text="@string/graphique"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/buttonPar"
+        app:layout_constraintLeft_toRightOf="@+id/buttonHisto"
+        app:layout_constraintWidth_percent="0.30" />
+
     <ImageButton
         android:id="@+id/buttonDelete"
         style="@android:style/Widget.DeviceDefault.Light.ImageButton"

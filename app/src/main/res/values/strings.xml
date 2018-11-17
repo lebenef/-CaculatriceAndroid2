@@ -39,4 +39,5 @@
     <string name="pgcd">pgcd</string>
     <string name="log2">log2</string>
     <string name="rad">rad</string>
+    <string name="graphique">Graphique</string>
 </resources>

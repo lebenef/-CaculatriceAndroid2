@@ -61,37 +61,27 @@ public class HistoActivity extends AppCompatActivity  {
                 }
                 adapter.notifyDataSetChanged();
             }
-            
         });
 
         //histoList.setAdapter(adapter);
 
-
-
         histoList.setOnItemClickListener((parent, view, position, id) -> {
-
+            String value = parent.getItemAtPosition(position).toString();
             HashMap<String,String> selected = (HashMap<String,String>) parent.getItemAtPosition(position);
             String selected_calc = selected.get("calc");
             String selected_res = selected.get("res");
 
-            Toast.makeText(getBaseContext(), selected_res, Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), value, Toast.LENGTH_LONG).show();
 
             //Intent main = new Intent(this, MainActivity.class);
             //hist.putExtra("liste", this.liste);
             //startActivity(main);
-            onBackPressed();
 
 
         });
         histoList.setAdapter(adapter);
 
-
-
-
-
-
     }
-
 
 
     public void btnClear(View view) {
