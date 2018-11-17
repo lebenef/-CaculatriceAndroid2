@@ -3,8 +3,10 @@ package com.example.samsung.calcul;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -40,16 +42,19 @@ public class MainActivity extends AppCompatActivity {
     String[] result;
     String resultString;
     String strOperation;
-    TextView textCalc;
-    TextView textResult;
+
     String tmp;
-    String tmpcalc;
+
 
     ArrayList<Map<String, String>> liste = new ArrayList<>();
     HashMap<String, String> hashMap = new HashMap<>();
-    Bdd bdd;
-    ExecutorService executor;
 
+
+    private TextView textCalc;
+    private TextView textResult;
+    private String tmpcalc;
+    private Bdd bdd;
+    private ExecutorService executor;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,45 @@ public class MainActivity extends AppCompatActivity {
         executor = Executors.newSingleThreadExecutor();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putString("calcul", textCalc.getText().toString());
+        outState.putString("resultat", textResult.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String calcul = savedInstanceState.getString("calcul", textCalc.getText().toString());
+        String resultat = savedInstanceState.getString("resultat", textCalc.getText().toString());
+
+        textCalc.setText(calcul);
+        textResult.setText(resultat);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
+        String resultat = sharedPref.getString("resultat", textCalc.getText().toString());
+
+        textCalc.setText(calcul);
+        textResult.setText(resultat);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("calcul", textCalc.getText().toString());
+        editor.putString("resultat", textResult.getText().toString());
+        editor.apply();
+    }
 
 
     public void btn0(View view) {
@@ -304,9 +348,9 @@ public class MainActivity extends AppCompatActivity {
         //String resultString;
         String calcString = textCalc.getText().toString();
 
-        regt = "(?<=[^\\d.])(?=\\d)|(?<=\\d)(?=[^\\d.])";
-        regd = "-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
-        regm = "\\+?-?\\*?/?-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
+        //regt = "(?<=[^\\d.])(?=\\d)|(?<=\\d)(?=[^\\d.])";
+        //regd = "-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
+        //regm = "\\+?-?\\*?/?-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
         //regf = "^"regd"("regm")*$";
 
         /*StringBuilder stringBuilder = new StringBuilder();

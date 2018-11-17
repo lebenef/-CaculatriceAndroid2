@@ -1,9 +1,14 @@
 package com.example.samsung.calcul;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,20 +27,28 @@ import java.util.concurrent.Executors;
 
 public class HistoActivity extends AppCompatActivity  {
 
-    ListView histoList;
-    ArrayList<Map<String, String>> liste;
-    SimpleAdapter adapter;
-    Bdd bdd;
-    ExecutorService executor;
+    private ArrayList<Map<String, String>> liste;
+    private SimpleAdapter adapter;
+    private Bdd bdd;
+    private ExecutorService executor;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_histo);
-        histoList = findViewById(R.id.histo);
+        ListView histoList = findViewById(R.id.histo);
         Toolbar  toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationOnClickListener(arrow -> onBackPressed());
+
+        }
 
         executor = Executors.newSingleThreadExecutor();
 
@@ -45,6 +58,22 @@ public class HistoActivity extends AppCompatActivity  {
         int[] to = {R.id.itemCalc, R.id.itemResult};
 
         adapter= new SimpleAdapter(this,liste, R.layout.item_histo, from, to);
+
+        histoList.setOnItemClickListener((parent, view, position, id) -> {
+            TextView textCalc = view.findViewById(R.id.itemCalc);
+            TextView textResult = view.findViewById(R.id.itemResult);
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("calcul", textCalc.getText().toString());
+            editor.putString("resultat", textResult.getText().toString());
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Selected!",
+                    Toast.LENGTH_SHORT);
+
+            toast.show();
+            editor.apply();
+            onBackPressed();
+        });
 
         bdd = Bdd.getInstance(getApplicationContext());
 
@@ -63,28 +92,40 @@ public class HistoActivity extends AppCompatActivity  {
             }
         });
 
-        //histoList.setAdapter(adapter);
-
-        histoList.setOnItemClickListener((parent, view, position, id) -> {
-            String value = parent.getItemAtPosition(position).toString();
-            HashMap<String,String> selected = (HashMap<String,String>) parent.getItemAtPosition(position);
-            String selected_calc = selected.get("calc");
-            String selected_res = selected.get("res");
-
-            Toast.makeText(getBaseContext(), value, Toast.LENGTH_LONG).show();
-
-            //Intent main = new Intent(this, MainActivity.class);
-            //hist.putExtra("liste", this.liste);
-            //startActivity(main);
-
-
-        });
         histoList.setAdapter(adapter);
 
     }
 
 
-    public void btnClear(View view) {
+    public void btnClear(MenuItem menuItem) {
+        executor.execute(() -> bdd.data().deleteAll());
+        this.recreate();
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "Historique Supprimé !",
+                Toast.LENGTH_SHORT);
+
+        toast.show();
+
+
+
+    }
+
+    public void btnDelete(View view)
+    {
+        LinearLayout parent = (LinearLayout)view.getParent();
+        final TextView calc = parent.findViewById(R.id.itemCalc);
+        executor.execute(() -> bdd.data().deleteData(calc.getText().toString()));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_histo, menu);
+        return true;
+    }
+
+
+    /*public void btnClear(View view) {
 
         //liste.clear();
         executor.execute(() -> bdd.data().deleteAll());
@@ -108,7 +149,7 @@ public class HistoActivity extends AppCompatActivity  {
 
         this.recreate();
 
-    }
+    }*/
 
     /*@Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

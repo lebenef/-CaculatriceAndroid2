@@ -1,7 +1,10 @@
 package com.example.samsung.calcul;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -16,6 +19,17 @@ public class GraphActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationOnClickListener(arrow -> onBackPressed());
+
+        }
+
         double y,x;
         x = -5.0;
 
@@ -27,5 +41,12 @@ public class GraphActivity extends AppCompatActivity {
             series.appendData(new DataPoint(x, y), true, 100);
         }
         graph.addSeries(series);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_graph, menu);
+        return true;
     }
 }

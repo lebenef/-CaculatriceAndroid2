@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".HistoActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -11,41 +12,16 @@
         android:layout_height="wrap_content"
         android:background="@android:color/holo_blue_dark"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/actionBarTheme"
+        app:title="@string/historique" />
 
-    <Button
-        android:id="@+id/buttonReturn"
-        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/ic_menu_revert"
-        android:onClick="btnReturn"
-        app:layout_constraintRight_toRightOf="@+id/toolbar"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
-
-    <Button
-        android:id="@+id/buttonClear"
-        style="@android:style/Widget.DeviceDefault.Button.Borderless.Small"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/ic_menu_delete"
-        android:onClick="btnClear"
-        app:layout_constraintRight_toLeftOf="@+id/buttonReturn"
-        app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
     <ListView
         android:id="@+id/histo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
-    </ListView>
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="1" />
+        android:headerDividersEnabled="false"
+        android:longClickable="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 </android.support.constraint.ConstraintLayout>
