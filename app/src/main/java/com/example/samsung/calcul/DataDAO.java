@@ -14,8 +14,8 @@ public interface DataDAO {
     @Insert
     void insertData(Data d);
 
-    @Query("delete from Data where calcul = :calcul")
-    void deleteData(String calcul);
+    @Query("delete from Data where id = :id")
+    void deleteData(int id);
 
     @Query("delete from Data")
     void deleteAll();

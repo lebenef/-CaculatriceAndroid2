@@ -54,23 +54,18 @@ public class HistoActivity extends AppCompatActivity  {
 
         liste = new ArrayList<>();
 
-        String[] from = {"calc", "res"};
-        int[] to = {R.id.itemCalc, R.id.itemResult};
+        String[] from = {"calc", "res","id"};
+        int[] to = {R.id.itemCalc, R.id.itemResult,R.id.itemId};
 
         adapter= new SimpleAdapter(this,liste, R.layout.item_histo, from, to);
 
         histoList.setOnItemClickListener((parent, view, position, id) -> {
-            TextView textCalc = view.findViewById(R.id.itemCalc);
+            //TextView textCalc = view.findViewById(R.id.itemCalc);
             TextView textResult = view.findViewById(R.id.itemResult);
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("calcul", textCalc.getText().toString());
-            editor.putString("resultat", textResult.getText().toString());
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Selected!",
-                    Toast.LENGTH_SHORT);
-
-            toast.show();
+            //editor.putString("calcul", textCalc.getText().toString());
+            editor.putString("calcul", textResult.getText().toString());
             editor.apply();
             onBackPressed();
         });
@@ -86,6 +81,8 @@ public class HistoActivity extends AppCompatActivity  {
 
                     hashMap.put("calc", data.calcul);
                     hashMap.put("res", data.resultat);
+                    hashMap.put("id", Integer.toString(data.id));
+
                     liste.add(hashMap);
                 }
                 adapter.notifyDataSetChanged();
@@ -113,8 +110,16 @@ public class HistoActivity extends AppCompatActivity  {
     public void btnDelete(View view)
     {
         LinearLayout parent = (LinearLayout)view.getParent();
-        final TextView calc = parent.findViewById(R.id.itemCalc);
-        executor.execute(() -> bdd.data().deleteData(calc.getText().toString()));
+        final TextView idString = parent.findViewById(R.id.itemId);
+        int id = Integer.valueOf(idString.getText().toString());
+        executor.execute(() -> bdd.data().deleteData(id));
+
+        this.recreate();
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "Calcul Supprimé !",
+                Toast.LENGTH_SHORT);
+
+        toast.show();
     }
 
     @Override
