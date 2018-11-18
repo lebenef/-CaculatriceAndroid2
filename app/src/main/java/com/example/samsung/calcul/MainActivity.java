@@ -16,13 +16,14 @@ import java.io.StringWriter;
 import java.io.FileWriter;
 import org.mariuszgromada.math.mxparser.*;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -397,8 +398,15 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         Expression e = new Expression(calcString);
-        resultString = Double.toString(e.calculate());
+        double resultDouble = e.calculate();
+        DecimalFormat df = new java.text.DecimalFormat();
+        DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
+        df.setMinimumFractionDigits(0);
+        df.setMaximumFractionDigits(15);
+        dfs.setDecimalSeparator('.');
+        df.setDecimalFormatSymbols(dfs);
 
+        resultString = df.format(resultDouble);
         textResult.setText(resultString);
 
        // hashMap.put("calc", calcString);
