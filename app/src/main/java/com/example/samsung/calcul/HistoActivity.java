@@ -2,8 +2,11 @@ package com.example.samsung.calcul;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +20,12 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +46,7 @@ public class HistoActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_histo);
-        ListView histoList = findViewById(R.id.histo);
+        SwipeMenuListView histoList = findViewById(R.id.histo);
         Toolbar  toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,12 +69,13 @@ public class HistoActivity extends AppCompatActivity  {
         adapter= new SimpleAdapter(this,liste, R.layout.item_histo, from, to);
 
         histoList.setOnItemClickListener((parent, view, position, id) -> {
-            //TextView textCalc = view.findViewById(R.id.itemCalc);
+            TextView textCalc = view.findViewById(R.id.itemCalc);
             TextView textResult = view.findViewById(R.id.itemResult);
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPref.edit();
-            //editor.putString("calcul", textCalc.getText().toString());
-            editor.putString("calcul", textResult.getText().toString());
+            String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
+            editor.putString("resultat", "0");
+            editor.putString("calcul", calcul + textResult.getText().toString());
             editor.apply();
             onBackPressed();
         });
@@ -84,12 +94,56 @@ public class HistoActivity extends AppCompatActivity  {
                     hashMap.put("id", Integer.toString(data.id));
 
                     liste.add(hashMap);
+
                 }
                 adapter.notifyDataSetChanged();
             }
         });
 
+
         histoList.setAdapter(adapter);
+        SwipeMenuCreator creator = menu -> {
+
+            SwipeMenuItem deleteItem = new SwipeMenuItem(
+                    getApplicationContext());
+            deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                    0x3F, 0x25)));
+            deleteItem.setWidth(120);
+            ///deleteItem.setTitle("Delete");
+            deleteItem.setIcon(R.drawable.ic_menu_delete);
+
+            menu.addMenuItem(deleteItem);
+        };
+
+        histoList.setMenuCreator(creator);
+
+        histoList.setOnMenuItemClickListener((position, menu, index) -> {
+
+             Object test = adapter.getItem(position);
+             String test2 = test.toString();
+
+            //View view = (View)adapter.getItem(position);
+            //final TextView idString = view.findViewById(R.id.itemId);
+            //int id = Integer.valueOf(idString.getText().toString());
+
+
+            switch (index) {
+                case 0:
+                    Toast toast3 = Toast.makeText(getApplicationContext(),test2 ,
+                            Toast.LENGTH_SHORT);
+
+                    toast3.show();
+                    break;
+                case 1:
+                    Toast toast2 = Toast.makeText(getApplicationContext(),
+                            "1  !",
+                            Toast.LENGTH_SHORT);
+
+                    toast2.show();
+                    break;
+            }
+            return false;
+        });
 
     }
 
