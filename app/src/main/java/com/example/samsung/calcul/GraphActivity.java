@@ -34,7 +34,7 @@ public class GraphActivity extends AppCompatActivity {
         x = -5.0;
 
         GraphView graph = findViewById(R.id.graph1);
-        series = new LineGraphSeries<DataPoint>();
+        series = new LineGraphSeries<>();
         for(int i =0; i<100; i++) {
             x = x + 0.1;
             y = Math.sin(x);

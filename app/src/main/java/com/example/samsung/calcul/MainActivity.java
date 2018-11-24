@@ -223,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         operationClick("e");
     }
     public void btnPi(View view) {
-        operationClick("pi");
+        operationClick("π");
     }
     public void btnRac(View view) {
         operationClick("sqrt(");
@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (Pattern.matches("^(.*[(+\\-/*])?$", tmpcalc)) {
             textCalc.setText(textCalc.getText()+"(");
 
-        } else if (Pattern.matches("^.*\\(.*[\\d)]$", tmpcalc) && parenthese_ouvert > parenthese_fermer) {
+        } else if (Pattern.matches("^.*\\(.*[\\w)]$", tmpcalc) && parenthese_ouvert > parenthese_fermer) {
             textCalc.setText(textCalc.getText()+")");
 
         }
@@ -319,11 +319,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void deleteClick() {
         tmpcalc = textCalc.getText().toString();
-        if (tmpcalc.length() > 1) {
-            tmpcalc = tmpcalc.substring(0, tmpcalc.length() - 1);
-        } else if (tmpcalc.length() == 1) {
-            tmpcalc = null;
-        }
+        tmpcalc = tmpcalc.replaceAll("([a-zA-Z]+\\(?|.)$", "");
+//        if (tmpcalc.length() > 1) {
+//            tmpcalc = tmpcalc.substring(0, tmpcalc.length() - 1);
+//        } else if (tmpcalc.length() == 1) {
+//            tmpcalc = null;
+//        }
         textCalc.setText(tmpcalc);
     }
 
@@ -347,7 +348,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void btnEgal(View view) {
         //String resultString;
-        String calcString = textCalc.getText().toString();
+        String calcString = textCalc.getText().toString().replace("π", "pi");
+
+
 
         //regt = "(?<=[^\\d.])(?=\\d)|(?<=\\d)(?=[^\\d.])";
         //regd = "-?\\(?-?[0-9]*\\.?[0-9]*\\)?";

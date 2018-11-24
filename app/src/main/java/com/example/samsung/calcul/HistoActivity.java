@@ -10,6 +10,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,7 +121,10 @@ public class HistoActivity extends AppCompatActivity  {
         histoList.setOnMenuItemClickListener((position, menu, index) -> {
 
              Object test = adapter.getItem(position);
-             String test2 = test.toString();
+             String idString = test.toString();
+             idString = idString.replaceAll("^.*id=(\\d+).*$", "$1");
+
+             int id = Integer.valueOf(idString);
 
             //View view = (View)adapter.getItem(position);
             //final TextView idString = view.findViewById(R.id.itemId);
@@ -129,17 +133,7 @@ public class HistoActivity extends AppCompatActivity  {
 
             switch (index) {
                 case 0:
-                    Toast toast3 = Toast.makeText(getApplicationContext(),test2 ,
-                            Toast.LENGTH_SHORT);
-
-                    toast3.show();
-                    break;
-                case 1:
-                    Toast toast2 = Toast.makeText(getApplicationContext(),
-                            "1  !",
-                            Toast.LENGTH_SHORT);
-
-                    toast2.show();
+                    btnDelete(id);
                     break;
             }
             return false;
@@ -161,11 +155,9 @@ public class HistoActivity extends AppCompatActivity  {
 
     }
 
-    public void btnDelete(View view)
+    public void btnDelete(int id)
     {
-        LinearLayout parent = (LinearLayout)view.getParent();
-        final TextView idString = parent.findViewById(R.id.itemId);
-        int id = Integer.valueOf(idString.getText().toString());
+
         executor.execute(() -> bdd.data().deleteData(id));
 
         this.recreate();
