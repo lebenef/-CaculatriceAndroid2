@@ -128,6 +128,11 @@ public class MainActivity extends AppCompatActivity {
         //hist.putExtra("liste", this.liste);
         startActivity(graph);
     }
+    public void btnCam(View view) {
+        Intent cam = new Intent(this, CameraActivity.class);
+        //hist.putExtra("liste", this.liste);
+        startActivity(cam);
+    }
 
     public void btnDelete(View view) {
         deleteClick();

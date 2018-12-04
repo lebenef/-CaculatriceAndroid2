@@ -40,5 +40,8 @@
     <string name="log2">log2</string>
     <string name="rad">rad</string>
     <string name="graphique">Graphique</string>
+    <string name="camera">Camera</string>
     <string name="textGraph">Sin(x)</string>
+    <string name="button_text">OCR</string>
+    <string name="text_hint">Cacul reconnue</string>
 </resources>
