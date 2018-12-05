@@ -40,5 +40,4 @@
     <string name="log2">log2</string>
     <string name="rad">rad</string>
     <string name="graphique">Graphique</string>
-    <string name="textGraph">Sin(x)</string>
 </resources>

@@ -21,8 +21,6 @@ public class PlotActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plot);
-        TextView textName = findViewById(R.id.textGraph);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -57,7 +55,7 @@ public class PlotActivity extends AppCompatActivity {
                 break;
         }
 
-        textName.setText(name);
+        toolbar.setTitle(name);
 
         double y,x;
         x = -10.0;

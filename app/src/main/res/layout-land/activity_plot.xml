@@ -17,12 +17,16 @@
         android:theme="?attr/actionBarTheme"
         app:title="@string/graphique" />
 
-    <ListView
-        android:id="@+id/graphList"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:entries="@array/function"
-        />
+        android:orientation="vertical">
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
+    </LinearLayout>
 
 </LinearLayout>
