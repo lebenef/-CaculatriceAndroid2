@@ -17,12 +17,22 @@
         android:theme="?attr/actionBarTheme"
         app:title="@string/graphique" />
 
-    <ListView
-        android:id="@+id/graphList"
+    <TextView
+        android:id="@+id/textGraph"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textGraph"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:entries="@array/function"
-    />
+        android:orientation="vertical">
+        <com.jjoe64.graphview.GraphView
+            android:id="@+id/graph1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
+    </LinearLayout>
 
 </LinearLayout>
