@@ -8,8 +8,9 @@
     tools:context=".MainActivity"
     tools:layout_editor_absoluteY="25dp">
 
-    <TextView
+    <EditText
         android:id="@+id/textCalc"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="top"
@@ -57,6 +58,17 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonPar"
         app:layout_constraintLeft_toRightOf="@+id/buttonHisto"
         app:layout_constraintWidth_percent="0.30" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        style="@android:style/Widget.DeviceDefault.Light.ImageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="l"
+        android:tint="@android:color/holo_blue_dark"
+        app:layout_constraintBottom_toTopOf="@+id/buttonPour"
+        app:layout_constraintRight_toLeftOf="@+id/buttonDelete"
+        app:srcCompat="@android:drawable/ic_btn_speak_now" />
 
     <ImageButton
         android:id="@+id/buttonDelete"
