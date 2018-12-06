@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -152,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.FRENCH);
             Log.d("voice", "btnVoice: top try ");
             try {
-                startActivityForResult(intent, 200);
                 Log.d("voice", "btnVoice: success ");
+                startActivityForResult(intent, 200);
 
             } catch (ActivityNotFoundException a) {
                 Log.d("voice", "btnVoice: error ");
@@ -170,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.d("voice", requestCode + "");
         super.onActivityResult(requestCode,resultCode,data);
         Log.d("voice", requestCode + "");
         if(requestCode == 200){
@@ -177,14 +179,39 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode==RESULT_OK && data != null){
                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 Log.d("voice", result.get(0));
-                //textCalc.setText(String.format("%s%s", textCalc.getText().toString(), result.get(0)));*
-                textCalc.setText("2+2");
+                String format =  result.get(0).replace(" ", "");
+                if(format.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
+                    editor.putString("calcul", calcul + format);
+                    editor.apply();
+                }
+                else
+                {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Expression non reconnue !",
+                            Toast.LENGTH_SHORT);
+
+                    toast.show();
+                }
             }
         }
     }
-    public void btnDelete(View view) {
-        deleteClick();
-    }
+    public void btnDelete(View view ) {
+        //if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS){
+            deleteClick();
+
+        /*}
+        else if (event.getAction() == MotionEvent.ACTION_DOWN){
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Etes vous sur ?",
+                    Toast.LENGTH_SHORT);
+
+            toast.show();
+
+        }*/
+        }
 
     public void btnPar(View view) {
         paraClick();
@@ -276,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
         operationClick("e");
     }
     public void btnPi(View view) {
-        operationClick("π");
+        operationClick("pi");
     }
     public void btnRac(View view) {
         operationClick("sqrt(");
@@ -424,7 +451,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void btnEgal(View view) {
         //String resultString;
-        String calcString = textCalc.getText().toString().replace("π", "pi");
+        String calcString = textCalc.getText().toString();
 
 
         regt = "(?<=[^\\d.])(?=\\d)|(?<=\\d)(?=[^\\d.])";
@@ -475,7 +502,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ScriptException e) {
            resultString = "Erreur";
         }*/
-        if (calcString.matches("^(-?[a-zA-Z]*\\(+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+-]|[*/]-?)([a-zA-Z]*\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
+        if (calcString.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
             Expression e = new Expression(calcString);
             double resultDouble = e.calculate();
             DecimalFormat df = new java.text.DecimalFormat();
@@ -521,7 +548,7 @@ public class MainActivity extends AppCompatActivity {
             String texteDebut = texte.substring(0, positionDebut);
             String texteFin = texte.substring(positionFin);
             texte = texteDebut + val + texteFin;
-            if( texte.matches("^(-?[a-zA-Z]*\\(+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+-]|[*/]-?)([a-zA-Z]*\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
+            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
                  textCalc.setText(texte);
                  editCalc.setSelection(positionDebut + val.length());
              }
@@ -531,7 +558,7 @@ public class MainActivity extends AppCompatActivity {
         {
             texte = textCalc.getText().toString() + val;
 
-            if( texte.matches("^(-?[a-zA-Z]*\\(+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+-]|[*/]-?)([a-zA-Z]*\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
+            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
 
                 textCalc.setText(texte);
             }
