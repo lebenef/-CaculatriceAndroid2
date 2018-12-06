@@ -229,7 +229,7 @@ public class HistoActivity extends AppCompatActivity  {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
 
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Calcul");
+            File file = new File(Environment.getExternalStorageDirectory(), "Calcul");
             filename = "Save_" + String.valueOf(System.currentTimeMillis());
             filepath = file.getPath() + File.separator + filename + ".csv";
             Log.e("path", filepath);

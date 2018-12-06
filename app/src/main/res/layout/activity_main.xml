@@ -63,6 +63,7 @@
         style="@android:style/Widget.DeviceDefault.Light.ImageButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:longClickable="false"
         android:onClick="btnDelete"
         android:tint="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonDiv"

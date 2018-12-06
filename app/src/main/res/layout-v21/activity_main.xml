@@ -64,7 +64,7 @@
         style="@android:style/Widget.DeviceDefault.Light.ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="l"
+        android:onClick="btnVoice"
         android:tint="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonPour"
         app:layout_constraintRight_toLeftOf="@+id/buttonDelete"

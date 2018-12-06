@@ -1,16 +1,20 @@
 package com.example.samsung.calcul;
 
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -141,24 +145,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnVoice(View view) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            Log.d("voice", "btnVoice: Permit OK ");
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.FRENCH);
+            Log.d("voice", "btnVoice: top try ");
+            try {
+                startActivityForResult(intent, 200);
+                Log.d("voice", "btnVoice: success ");
 
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,Locale.FRENCH);
-        try{
-            startActivityForResult(intent,200);
-        }catch (ActivityNotFoundException a){
-            Log.d("Rec", "btnVoice: error ");
+            } catch (ActivityNotFoundException a) {
+                Log.d("voice", "btnVoice: error ");
+            }
+        }
+        else{
+            Log.d("voice", "btnVoice: Permit False ");
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO}, 0);
+            this.recreate();
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode,resultCode,data);
+        Log.d("voice", requestCode + "");
         if(requestCode == 200){
+            Log.d("voice", resultCode + "");
             if(resultCode==RESULT_OK && data != null){
                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                textCalc.setText(textCalc.getText()+result.get(0));
+                Log.d("voice", result.get(0));
+                //textCalc.setText(String.format("%s%s", textCalc.getText().toString(), result.get(0)));*
+                textCalc.setText("2+2");
             }
         }
     }
@@ -455,7 +475,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ScriptException e) {
            resultString = "Erreur";
         }*/
-        if (calcString.matches(regf)) {
+        if (calcString.matches("^(-?\\(\\+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+\\-]|[*/]-?)(\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
             Expression e = new Expression(calcString);
             double resultDouble = e.calculate();
             DecimalFormat df = new java.text.DecimalFormat();
@@ -501,15 +521,20 @@ public class MainActivity extends AppCompatActivity {
             String texteDebut = texte.substring(0, positionDebut);
             String texteFin = texte.substring(positionFin);
             texte = texteDebut + val + texteFin;
+             if( texte.matches("^(-?\\(\\+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+\\-]|[*/]-?)(\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
+                 textCalc.setText(texte);
+                 editCalc.setSelection(positionDebut + val.length());
+             }
 
-            textCalc.setText(texte);
-
-            editCalc.setSelection(positionDebut + val.length());
         }
         else
         {
             texte = textCalc.getText().toString() + val;
-            textCalc.setText(texte);
+
+            if( texte.matches("^(-?\\(\\+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+\\-]|[*/]-?)(\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
+
+                textCalc.setText(texte);
+            }
         }
     }
 }
