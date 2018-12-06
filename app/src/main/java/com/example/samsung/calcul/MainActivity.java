@@ -475,7 +475,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ScriptException e) {
            resultString = "Erreur";
         }*/
-        if (calcString.matches("^(-?\\(\\+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+\\-]|[*/]-?)(\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
+        if (calcString.matches("^(-?[a-zA-Z]*\\(+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+-]|[*/]-?)([a-zA-Z]*\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
             Expression e = new Expression(calcString);
             double resultDouble = e.calculate();
             DecimalFormat df = new java.text.DecimalFormat();
@@ -521,7 +521,7 @@ public class MainActivity extends AppCompatActivity {
             String texteDebut = texte.substring(0, positionDebut);
             String texteFin = texte.substring(positionFin);
             texte = texteDebut + val + texteFin;
-             if( texte.matches("^(-?\\(\\+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+\\-]|[*/]-?)(\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
+            if( texte.matches("^(-?[a-zA-Z]*\\(+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+-]|[*/]-?)([a-zA-Z]*\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
                  textCalc.setText(texte);
                  editCalc.setSelection(positionDebut + val.length());
              }
@@ -531,7 +531,7 @@ public class MainActivity extends AppCompatActivity {
         {
             texte = textCalc.getText().toString() + val;
 
-            if( texte.matches("^(-?\\(\\+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+\\-]|[*/]-?)(\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
+            if( texte.matches("^(-?[a-zA-Z]*\\(+)*-?(\\d*|\\d+(\\.\\d*)?)\\)*(\\d\\)*(([+-]|[*/]-?)([a-zA-Z]*\\(-?)*(\\d*|\\d+(\\.\\d*)?))?)*$")) {
 
                 textCalc.setText(texte);
             }
