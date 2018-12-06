@@ -187,27 +187,7 @@ public class HistoActivity extends AppCompatActivity  {
         return true;
     }
 
-    public void verifyStoragePermissions(Activity activity) {
 
-        final int REQUEST_EXTERNAL_STORAGE = 1;
-        String[] PERMISSIONS_STORAGE = {
-
-                //Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-
-        int permission = ActivityCompat.checkSelfPermission(
-                activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if(permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-            );
-        }
-    }
 
     public void btnClear(MenuItem menuItem) {
         executor.execute(() -> bdd.data().deleteAll());
@@ -287,11 +267,8 @@ public class HistoActivity extends AppCompatActivity  {
             });
 
 
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Start drive !",
-                    Toast.LENGTH_SHORT);
 
-            toast.show();
+
             signIn();
 
         }
@@ -300,7 +277,7 @@ public class HistoActivity extends AppCompatActivity  {
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-            save();
+            this.recreate();
         }
     }
 
