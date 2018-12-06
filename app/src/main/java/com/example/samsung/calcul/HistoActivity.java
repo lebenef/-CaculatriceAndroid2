@@ -1,37 +1,65 @@
 package com.example.samsung.calcul;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.drive.CreateFileActivityOptions;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveClient;
+import com.google.android.gms.drive.DriveContents;
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DriveResourceClient;
+import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.OpenFileActivityOptions;
+import com.google.android.gms.tasks.Task;
+
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,7 +70,17 @@ public class HistoActivity extends AppCompatActivity  {
     private Bdd bdd;
     private ExecutorService executor;
 
+    private static final String TAG = "drive-quickstart";
+    private static final int REQUEST_CODE_SIGN_IN = 0;
+    private static final int REQUEST_CODE_CAPTURE_IMAGE = 1;
+    private static final int REQUEST_CODE_CREATOR = 2;
 
+    private DriveClient mDriveClient;
+    private DriveResourceClient mDriveResourceClient;
+    private Bitmap mBitmapToSave;
+    private static final int REQUEST_CODE_CREATE_FILE = 2;
+    String filepath;
+    String filename;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,6 +180,35 @@ public class HistoActivity extends AppCompatActivity  {
     }
 
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_histo, menu);
+        return true;
+    }
+
+    public void verifyStoragePermissions(Activity activity) {
+
+        final int REQUEST_EXTERNAL_STORAGE = 1;
+        String[] PERMISSIONS_STORAGE = {
+
+                //Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+
+        int permission = ActivityCompat.checkSelfPermission(
+                activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if(permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
+
     public void btnClear(MenuItem menuItem) {
         executor.execute(() -> bdd.data().deleteAll());
         this.recreate();
@@ -154,7 +221,9 @@ public class HistoActivity extends AppCompatActivity  {
 
 
     }
-
+    public void btnDrive(MenuItem menuItem) throws IOException {
+        save();
+    }
     public void btnDelete(int id)
     {
 
@@ -166,61 +235,167 @@ public class HistoActivity extends AppCompatActivity  {
                 Toast.LENGTH_SHORT);
 
         toast.show();
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_histo, menu);
-        return true;
-    }
-
-
-    /*public void btnClear(View view) {
-
-        //liste.clear();
-        executor.execute(() -> bdd.data().deleteAll());
-
-        this.recreate();
 
     }
 
-    public void btnReturn(View view) {
-        onBackPressed();
+    public void save() throws IOException {
 
+        // verifyStoragePermissions(this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+
+
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Calcul");
+            filename = "Save_" + String.valueOf(System.currentTimeMillis());
+            filepath = file.getPath() + File.separator + filename + ".csv";
+            Log.e("path", filepath);
+
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            FileWriter fileWriter = null;
+            fileWriter = new FileWriter(filepath);
+
+            fileWriter.append("id,calcul,resultat");
+            fileWriter.append("\n");
+            FileWriter finalFileWriter = fileWriter;
+            FileWriter finalFileWriter1 = fileWriter;
+            bdd.data().getAll().observe(this, histories -> {
+
+                if (histories != null) {
+                    for (Data data : histories) {
+                        try {
+                            finalFileWriter.append(Integer.toString(data.id));
+                            finalFileWriter.append(",");
+                            finalFileWriter.append(data.calcul);
+                            finalFileWriter.append(",");
+                            finalFileWriter.append(data.resultat);
+                            finalFileWriter.append("\n");
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    try {
+                        finalFileWriter1.flush();
+                        finalFileWriter1.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Start drive !",
+                    Toast.LENGTH_SHORT);
+
+            toast.show();
+            signIn();
+
+        }
+        else
+        {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
+            save();
+        }
     }
 
-    public void btnDel(View view ) {
+    protected void signIn() {
+        Set<Scope> requiredScopes = new HashSet<>(2);
+        requiredScopes.add(Drive.SCOPE_FILE);
+        requiredScopes.add(Drive.SCOPE_APPFOLDER);
+        GoogleSignInAccount signInAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (signInAccount != null && signInAccount.getGrantedScopes().containsAll(requiredScopes)) {
+            initializeDriveClient(signInAccount);
+        } else {
+            GoogleSignInOptions signInOptions =
+                    new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestScopes(Drive.SCOPE_FILE)
+                            .requestScopes(Drive.SCOPE_APPFOLDER)
+                            .build();
+            GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, signInOptions);
+            startActivityForResult(googleSignInClient.getSignInIntent(), REQUEST_CODE_SIGN_IN);
+        }
+    }
 
-        Data data = new Data();
-        data.id = 2;
+    /**
+     * Continues the sign-in process, initializing the Drive clients with the current
+     * user's account.
+     */
+    private void initializeDriveClient(GoogleSignInAccount signInAccount) {
+        mDriveClient = Drive.getDriveClient(getApplicationContext(), signInAccount);
+        mDriveResourceClient = Drive.getDriveResourceClient(getApplicationContext(), signInAccount);
+        onDriveClientReady();
+    }
+    protected void onDriveClientReady() {
+        createFileWithIntent();
+    }
 
+    private void createFileWithIntent() {
+        // [START drive_android_create_file_with_intent]
+        Task<DriveContents> createContentsTask = getDriveResourceClient().createContents();
+        createContentsTask
+                .continueWithTask(task -> {
+                    DriveContents contents = task.getResult();
+                    Uri uri = Uri.parse(filepath);
+                    OutputStream outputStream = contents.getOutputStream();
+                    try {
+                        InputStream inputStream = getContentResolver().openInputStream(uri);
+                        if (inputStream != null) {
+                            byte[] data = new byte[1024];
+                            while (inputStream.read(data) != -1) {
+                                //Reading data from local storage and writing to google drive
+                                outputStream.write(data);
+                            }
+                            inputStream.close();
+                        }
+                        outputStream.close();
+                    } catch (IOException e) {
+                        Log.e(TAG, e.getMessage());
+                    }
 
-        executor.execute(() -> bdd.data().deleteData(data));
+                    MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                            .setTitle(filename)
+                            .setMimeType("text/csv")
+                            .setStarred(true)
+                            .build();
 
-        this.recreate();
-
-    }*/
-
-    /*@Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                    CreateFileActivityOptions createOptions =
+                            new CreateFileActivityOptions.Builder()
+                                    .setInitialDriveContents(contents)
+                                    .setInitialMetadata(changeSet)
+                                    .build();
+                    return getDriveClient().newCreateFileActivityIntentSender(createOptions);
+                })
+                .addOnSuccessListener(this,
+                        intentSender -> {
+                            try {
+                                startIntentSenderForResult(
+                                        intentSender, REQUEST_CODE_CREATE_FILE, null, 0, 0, 0);
+                            } catch (IntentSender.SendIntentException e) {
+                                Log.e(TAG, "Unable to create file", e);
+                                finish();
+                            }
+                        })
+                .addOnFailureListener(this, e -> {
+                    Log.e(TAG, "Unable to create file", e);
+                    finish();
+                });
     }
 
 
-    public void onItemClick(AdapterView<?> adapter, View view, int position){
-        //ItemClicked item = adapter.getItemAtPosition(position);
+    protected DriveClient getDriveClient() {
+        return mDriveClient;
+    }
 
-        Intent main = new Intent(this, MainActivity.class);
-        Map<String, String> val = liste.get(position);
+    protected DriveResourceClient getDriveResourceClient() {
+        return mDriveResourceClient;
+    }
 
-        String calc = val.get("calc");
-        String result = val.get("res");
-        main.putExtra("calc",calc);
-        main.putExtra("res",result);
-
-        startActivity(main);
-    }*/
 }
 
 
