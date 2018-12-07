@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,7 +24,9 @@
         </activity>
         <activity android:name=".HistoActivity"/>
         <activity android:name=".GraphActivity"/>
+        <activity android:name=".PlotActivity"/>
         <activity android:name=".CameraActivity"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.samsung.calcul.fileprovider"

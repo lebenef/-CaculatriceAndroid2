@@ -293,13 +293,19 @@ public class CameraActivity extends AppCompatActivity {
 
         Log.v(TAG, "OCRED TEXT: " + recognizedText);
 
-        if ( lang.equalsIgnoreCase("eng") ) {
-            recognizedText = recognizedText.replaceAll("[^a-zA-Z0-9]+", " ");
-        }
+        //if ( lang.equalsIgnoreCase("eng") ) {
+        recognizedText = recognizedText.replaceAll("[x]+", "*");
+        recognizedText = recognizedText.replaceAll("[÷]+", "/");
+        recognizedText = recognizedText.replaceAll("[^0-9+\\-*/.]+", "");
+        recognizedText = recognizedText.replaceAll(" ", "");
+
+        //}
+        Log.v(TAG, "OCRED after: " + recognizedText);
 
         recognizedText = recognizedText.trim();
+        Log.v(TAG, "OCRED after 2: " + recognizedText);
 
-        if ( recognizedText.length() != 0 ) {
+        if ( recognizedText.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$") ) {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPref.edit();
@@ -311,6 +317,15 @@ public class CameraActivity extends AppCompatActivity {
             onBackPressed();
            // _field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
             //_field.setSelection(_field.getText().toString().length());
+        }
+        else{
+
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Expression non reconnue !",
+                    Toast.LENGTH_SHORT);
+
+            toast.show();
+            onBackPressed();
         }
 
         // Cycle done.

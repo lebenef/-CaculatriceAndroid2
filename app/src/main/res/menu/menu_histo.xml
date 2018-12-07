@@ -4,10 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".HistoActivity">
     <item
+        android:id="@+id/drive"
+        android:icon="@drawable/ic_drive_color"
+        android:onClick="btnDrive"
+        android:title="@string/c"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/clear"
         android:icon="@android:drawable/ic_menu_delete"
         android:onClick="btnClear"
         android:title="@string/c"
         app:showAsAction="always"
         />
+
 </menu>
