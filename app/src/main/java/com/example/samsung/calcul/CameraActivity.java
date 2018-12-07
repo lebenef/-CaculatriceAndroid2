@@ -166,13 +166,14 @@ public class CameraActivity extends AppCompatActivity {
 
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CAMERA}, 0);
-                startCameraActivity();
+                onBackPressed();
+
             }
         } else {
             // Request permission from the user
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-            startCameraActivity();
+            onBackPressed();
 
         }
 

@@ -16,6 +16,7 @@
         android:gravity="top"
         android:textSize="30sp"
         android:textStyle="bold"
+        android:text="@string/calc"
         app:layout_constraintLeft_toRightOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/guideline7" />
 
@@ -91,7 +92,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:longClickable="false"
-        android:onClick="btnDelete"
         android:tint="@android:color/holo_blue_dark"
         app:layout_constraintBottom_toTopOf="@+id/buttonDiv"
         app:layout_constraintRight_toLeftOf="@+id/guideline2"

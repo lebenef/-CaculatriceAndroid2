@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
 import android.support.annotation.RequiresApi;
@@ -19,7 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
@@ -41,7 +45,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     double dblResult;
     double dblValue1;
     double dblValue2;
@@ -68,18 +72,58 @@ public class MainActivity extends AppCompatActivity {
     private String tmpcalc;
     private Bdd bdd;
     private ExecutorService executor;
-
+    private ImageButton delete;
+    private boolean pressed = false;
+    private Long timer;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textResult = findViewById(R.id.textResult);
         textCalc =  findViewById(R.id.textCalc);
+        delete =  (ImageButton) findViewById(R.id.buttonDelete);
+
         bdd = Bdd.getInstance(getApplicationContext());
         executor = Executors.newSingleThreadExecutor();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             textCalc.setShowSoftInputOnFocus(false);
+            EditText editCalc = (EditText) textCalc;
+            editCalc.setSelection(editCalc.getText().length());
+
+
         }
+
+        delete.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                timer = SystemClock.uptimeMillis();
+                pressed = true;
+                deleteClick();
+
+                return true;
+
+            } if (event.getAction() == MotionEvent.ACTION_UP ) {
+                pressed = false;
+
+                return true;
+            }
+            if (pressed ) {
+
+                if (SystemClock.uptimeMillis() - timer > 600) {
+
+                    deleteClick();
+                }
+            }
+            return false;
+        });
+
+        /*delete.setOnLongClickListener( new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v){
+                pressed = true;
+                deleteClick();
+                return true;
+            }
+        });*/
     }
 
     @Override
@@ -208,19 +252,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void btnDelete(View view ) {
-        //if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS){
+        pressed = false;
+
+        deleteClick();
+
+    }
+
+    public void deleteClickLong() {
+        /*Boolean test = true;
+        while(true) {
             deleteClick();
-
-        /*}
-        else if (event.getAction() == MotionEvent.ACTION_DOWN){
-            Toast toast = Toast.makeText(getApplicationContext(),
-                    "Etes vous sur ?",
-                    Toast.LENGTH_SHORT);
-
-            toast.show();
-
         }*/
-        }
+
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "Je suis long !",
+                Toast.LENGTH_SHORT);
+
+        toast.show();
+    }
+
+
+
 
     public void btnPar(View view) {
         paraClick();
@@ -532,14 +584,20 @@ public class MainActivity extends AppCompatActivity {
                 data.resultat = resultString;
 
                 executor.execute(() -> bdd.data().insertData(data));
+                ajoutCalc(resultString);
+                textCalc.setText(resultString);
+
+
             }
         }
         else{
+
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Etes vous sur ?",
                     Toast.LENGTH_SHORT);
 
             toast.show();
+
 
         }
     }
