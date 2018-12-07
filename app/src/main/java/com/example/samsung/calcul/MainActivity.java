@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 format = format.replace("x","*");
                 format = format.replace("X","*");
 
-                if(format.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+                if(format.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!%/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = sharedPref.edit();
                     String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
@@ -511,7 +511,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (ScriptException e) {
            resultString = "Erreur";
         }*/
-        if (calcString.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+        if (calcString.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
             Expression e = new Expression(calcString);
             double resultDouble = e.calculate();
             DecimalFormat df = new java.text.DecimalFormat();
@@ -557,7 +557,7 @@ public class MainActivity extends AppCompatActivity {
             String texteDebut = texte.substring(0, positionDebut);
             String texteFin = texte.substring(positionFin);
             texte = texteDebut + val + texteFin;
-            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
                  textCalc.setText(texte);
                  editCalc.setSelection(positionDebut + val.length());
              }
@@ -567,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
         {
             texte = textCalc.getText().toString() + val;
 
-            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
 
                 textCalc.setText(texte);
             }
