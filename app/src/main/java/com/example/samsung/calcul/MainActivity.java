@@ -102,8 +102,6 @@ public class MainActivity extends AppCompatActivity  {
 
         outState.putString("calcul", textCalc.getText().toString());
         outState.putString("resultat", textResult.getText().toString());
-        outState.putString("positiondebut", Integer.toString(positionDebut));
-        outState.putString("positionfin", Integer.toString(positionFin));
 
 
     }
@@ -113,12 +111,14 @@ public class MainActivity extends AppCompatActivity  {
         super.onRestoreInstanceState(savedInstanceState);
         String calcul = savedInstanceState.getString("calcul", textCalc.getText().toString());
         String resultat = savedInstanceState.getString("resultat", textCalc.getText().toString());
-        String positiond = savedInstanceState.getString("positiondebut", Integer.toString(positionDebut));
-        String positionf = savedInstanceState.getString("positionfin",Integer.toString(positionFin));
+
         textCalc.setText(calcul);
         textResult.setText(resultat);
-        positionDebut = Integer.parseInt(positiond);
-        positionFin = Integer.parseInt(positionf);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            EditText editCalc = (EditText) textCalc;
+            editCalc.setSelection(calcul.length());
+        }
         btnEgalTemp();
     }
 
@@ -129,12 +129,15 @@ public class MainActivity extends AppCompatActivity  {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
         String resultat = sharedPref.getString("resultat", textCalc.getText().toString());
-        String positiond = sharedPref.getString("positiondebut", Integer.toString(positionDebut));
-        String positionf = sharedPref.getString("positionfin",Integer.toString(positionFin));
+
         textCalc.setText(calcul);
         textResult.setText(resultat);
-        positionDebut = Integer.parseInt(positiond);
-        positionFin = Integer.parseInt(positionf);
+
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            EditText editCalc = (EditText) textCalc;
+            editCalc.setSelection(calcul.length());
+        }
         btnEgalTemp();
     }
 
