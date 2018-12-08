@@ -186,6 +186,8 @@ public class MainActivity extends AppCompatActivity  {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.FRENCH);
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Enoncer votre calcul !");
+
             Log.d("voice", "btnVoice: top try ");
             try {
                 Log.d("voice", "btnVoice: success ");
@@ -502,7 +504,8 @@ public class MainActivity extends AppCompatActivity  {
 
                 executor.execute(() -> bdd.data().insertData(data));
                 textCalc.setText("");
-                ajoutCalc(resultString);
+                String rs = resultString.replaceAll("\\s+","");
+                ajoutCalc(rs);
                 textResult.setText("");
 
 

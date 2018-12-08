@@ -108,7 +108,8 @@ public class HistoActivity extends AppCompatActivity  {
             SharedPreferences.Editor editor = sharedPref.edit();
             String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
             editor.putString("resultat", "0");
-            editor.putString("calcul", calcul + textResult.getText().toString());
+            String calc = textResult.getText().toString().replaceAll("\\s+", "");
+            editor.putString("calcul", calcul + calc);
             editor.apply();
             onBackPressed();
         });
