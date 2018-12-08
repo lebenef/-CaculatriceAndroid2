@@ -3,32 +3,26 @@ package com.example.samsung.calcul;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedWriter;
-import java.io.StringWriter;
-import java.io.FileWriter;
+
 import org.mariuszgromada.math.mxparser.*;
 
 import java.text.DecimalFormat;
@@ -37,34 +31,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 public class MainActivity extends AppCompatActivity  {
-    double dblResult;
-    double dblValue1;
-    double dblValue2;
 
 
-    String op;
-    String regd;
-    String regf;
-    String regm;
-    String regt;
-    double res;
     String[] result;
     String resultString;
-    String strOperation;
 
-    String tmp;
-
-    ArrayList<Map<String, String>> liste = new ArrayList<>();
-    HashMap<String, String> hashMap = new HashMap<>();
 
 
     private TextView textCalc;
@@ -75,6 +51,8 @@ public class MainActivity extends AppCompatActivity  {
     private ImageButton delete;
     private boolean pressed = false;
     private Long timer;
+    int positionDebut;
+    int positionFin ;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -116,14 +94,6 @@ public class MainActivity extends AppCompatActivity  {
             return false;
         });
 
-        /*delete.setOnLongClickListener( new View.OnLongClickListener(){
-            @Override
-            public boolean onLongClick(View v){
-                pressed = true;
-                deleteClick();
-                return true;
-            }
-        });*/
     }
 
     @Override
@@ -132,6 +102,10 @@ public class MainActivity extends AppCompatActivity  {
 
         outState.putString("calcul", textCalc.getText().toString());
         outState.putString("resultat", textResult.getText().toString());
+        outState.putString("positiondebut", Integer.toString(positionDebut));
+        outState.putString("positionfin", Integer.toString(positionFin));
+
+
     }
 
     @Override
@@ -139,9 +113,13 @@ public class MainActivity extends AppCompatActivity  {
         super.onRestoreInstanceState(savedInstanceState);
         String calcul = savedInstanceState.getString("calcul", textCalc.getText().toString());
         String resultat = savedInstanceState.getString("resultat", textCalc.getText().toString());
-
+        String positiond = savedInstanceState.getString("positiondebut", Integer.toString(positionDebut));
+        String positionf = savedInstanceState.getString("positionfin",Integer.toString(positionFin));
         textCalc.setText(calcul);
         textResult.setText(resultat);
+        positionDebut = Integer.parseInt(positiond);
+        positionFin = Integer.parseInt(positionf);
+        btnEgalTemp();
     }
 
     @Override
@@ -151,9 +129,13 @@ public class MainActivity extends AppCompatActivity  {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
         String resultat = sharedPref.getString("resultat", textCalc.getText().toString());
-
+        String positiond = sharedPref.getString("positiondebut", Integer.toString(positionDebut));
+        String positionf = sharedPref.getString("positionfin",Integer.toString(positionFin));
         textCalc.setText(calcul);
         textResult.setText(resultat);
+        positionDebut = Integer.parseInt(positiond);
+        positionFin = Integer.parseInt(positionf);
+        btnEgalTemp();
     }
 
     @Override
@@ -163,6 +145,8 @@ public class MainActivity extends AppCompatActivity  {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("calcul", textCalc.getText().toString());
         editor.putString("resultat", textResult.getText().toString());
+        editor.putString("positiondebut", Integer.toString(positionDebut));
+        editor.putString("positionfin", Integer.toString(positionFin));
         editor.apply();
     }
 
@@ -172,26 +156,25 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void btnC(View view) {
-        textResult.setText("0");
-        textCalc.setText(null);
+        textResult.setText("");
+        textCalc.setText("");
 
     }
 
     public void btnHisto(View view) {
         Intent hist = new Intent(this, HistoActivity.class);
-        //hist.putExtra("liste", this.liste);
         startActivity(hist);
     }
 
     public void btnGraph(View view) {
         Intent graph = new Intent(this, GraphActivity.class);
-        //hist.putExtra("liste", this.liste);
         startActivity(graph);
     }
     public void btnCam(View view) {
         Intent cam = new Intent(this, CameraActivity.class);
-        //hist.putExtra("liste", this.liste);
         startActivity(cam);
+        btnEgalTemp();
+
     }
 
     public void btnVoice(View view) {
@@ -215,6 +198,7 @@ public class MainActivity extends AppCompatActivity  {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECORD_AUDIO}, 0);
             this.recreate();
+
         }
     }
 
@@ -232,13 +216,16 @@ public class MainActivity extends AppCompatActivity  {
                 format = format.replace("×","*");
                 format = format.replace("x","*");
                 format = format.replace("X","*");
+                format = format.replace(",",".");
+                format = format.replace("Modulo","#");
 
-                if(format.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!%/^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+                if(format.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)((?<!\\))\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     SharedPreferences.Editor editor = sharedPref.edit();
                     String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
                     editor.putString("calcul", calcul + format);
                     editor.apply();
+
                 }
                 else
                 {
@@ -257,22 +244,6 @@ public class MainActivity extends AppCompatActivity  {
         deleteClick();
 
     }
-
-    public void deleteClickLong() {
-        /*Boolean test = true;
-        while(true) {
-            deleteClick();
-        }*/
-
-        Toast toast = Toast.makeText(getApplicationContext(),
-                "Je suis long !",
-                Toast.LENGTH_SHORT);
-
-        toast.show();
-    }
-
-
-
 
     public void btnPar(View view) {
         paraClick();
@@ -394,22 +365,14 @@ public class MainActivity extends AppCompatActivity  {
 
     public void chiffreClick(String strChiffre) {
         ajoutCalc(strChiffre);
-        /*TextView textView = textCalc;
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(textCalc.getText());
-        stringBuilder.append(strChiffre);
-        textView.setText(stringBuilder.toString());*/
+
     }
 
     private void operationClick(String operateur) {
 
 
         ajoutCalc(operateur);
-        /*TextView textView = this.textCalc;
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(this.);
-        stringBuilder.append(this.strOperation);
-        textView.setText(stringBuilder.toString());*/
+
     }
 
     private void paraClick() {
@@ -437,6 +400,8 @@ public class MainActivity extends AppCompatActivity  {
             ajoutCalc(")");
 
         }
+        btnEgalTemp();
+
     }
 
 
@@ -460,11 +425,15 @@ public class MainActivity extends AppCompatActivity  {
             textCalc.setText(texte);
 
             editCalc.setSelection(positionDebut);
+            btnEgalTemp();
+
         }
         else
         {
             texte = textCalc.getText().toString();
             textCalc.setText(texte.substring(0, Math.max(texte.length() - 1, 0)));
+            btnEgalTemp();
+
         }
     }
 
@@ -483,11 +452,6 @@ public class MainActivity extends AppCompatActivity  {
                 tmpcalc= "-" + tmpcalc;
                 positionDebut++;
                 positionFin++;
-
-                /*StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append("-");
-                stringBuilder.append(this.textCalc.getText());
-                this.tmpcalc = stringBuilder.toString();*/
 
             } else {
                 tmpcalc = tmpcalc.substring(1);
@@ -508,62 +472,14 @@ public class MainActivity extends AppCompatActivity  {
                 editCalc.setSelection(positionDebut);
             }
         }
+        btnEgalTemp();
+
     }
 
     public void btnEgal(View view) {
-        //String resultString;
         String calcString = textCalc.getText().toString();
 
-
-        regt = "(?<=[^\\d.])(?=\\d)|(?<=\\d)(?=[^\\d.])";
-        regd = "-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
-        regm = "\\+?-?\\*?/?-?\\(?-?[0-9]*\\.?[0-9]*\\)?";
-        regf = "^" + regd + "(" + regm + ")*$";
-
-
-        /*StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("^");
-        stringBuilder.append(regd);
-        stringBuilder.append("(");
-        stringBuilder.append(regm);
-        stringBuilder.append(")*$");
-        regf = stringBuilder.toString();*/
-
-    /*    result = textCalc.getText().toString().split(regt);
-        op = null;
-        res = 0.0d;
-        for (String s : result) {
-            if (!(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/"))) {
-                if (!s.equals("%")) {
-                    if (op == null) {
-                        res = Double.parseDouble(s);
-                    } else if (op.equals("+")) {
-                        res += Double.parseDouble(s);
-                    } else if (op.equals("-")) {
-                        res -= Double.parseDouble(s);
-                    } else if (op.equals("*")) {
-                        this.res *= Double.parseDouble(s);
-                    } else if (op.equals("/")) {
-                        res /= Double.parseDouble(s);
-                    } else if (op.equals("%")) {
-                        res /= 100.0d;
-                    }
-                }
-            }
-            op = s;
-        }
-
-        resultString = Double.toString(res);*/
-
-
-        /*ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("rhino");
-        try {
-              resultString = engine.eval(calcString).toString();
-        } catch (ScriptException e) {
-           resultString = "Erreur";
-        }*/
-        if (calcString.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+        if (calcString.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)((?<!\\))\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
             Expression e = new Expression(calcString);
             double resultDouble = e.calculate();
             DecimalFormat df = new java.text.DecimalFormat();
@@ -574,32 +490,70 @@ public class MainActivity extends AppCompatActivity  {
             df.setDecimalFormatSymbols(dfs);
 
             resultString = df.format(resultDouble);
-            textResult.setText(resultString);
 
-            // hashMap.put("calc", calcString);
-            //  hashMap.put("res", resultString);
+
             if (!resultString.equals("NaN")) {
                 Data data = new Data();
                 data.calcul = calcString;
                 data.resultat = resultString;
 
                 executor.execute(() -> bdd.data().insertData(data));
+                textCalc.setText("");
                 ajoutCalc(resultString);
-                textCalc.setText(resultString);
+                textResult.setText("");
 
 
+            }
+            else{
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Expression non reconnue",
+                        Toast.LENGTH_SHORT);
+
+                toast.show();
             }
         }
         else{
 
             Toast toast = Toast.makeText(getApplicationContext(),
-                    "Etes vous sur ?",
+                    "Expression non reconnue",
                     Toast.LENGTH_SHORT);
 
             toast.show();
 
 
         }
+    }
+
+    public void btnEgalTemp() {
+        String calcString = textCalc.getText().toString();
+
+        if (calcString.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)((?<!\\))\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+            Expression e = new Expression(calcString);
+            double resultDouble = e.calculate();
+            DecimalFormat df = new java.text.DecimalFormat();
+            DecimalFormatSymbols dfs = df.getDecimalFormatSymbols();
+            df.setMinimumFractionDigits(0);
+            df.setMaximumFractionDigits(15);
+            dfs.setDecimalSeparator('.');
+            df.setDecimalFormatSymbols(dfs);
+
+            resultString = df.format(resultDouble);
+
+            if (!resultString.equals("NaN")) {
+                textResult.setText(resultString);
+
+            }
+            else{
+                textResult.setText("");
+
+            }
+        }
+        else{
+
+            textResult.setText("");
+
+        }
+
     }
 
 
@@ -609,15 +563,16 @@ public class MainActivity extends AppCompatActivity  {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             EditText editCalc = (EditText) textCalc;
-            int positionDebut = textCalc.getSelectionStart();
-            int positionFin = textCalc.getSelectionEnd();
+             positionDebut = textCalc.getSelectionStart();
+             positionFin = textCalc.getSelectionEnd();
             texte = textCalc.getText().toString();
             String texteDebut = texte.substring(0, positionDebut);
             String texteFin = texte.substring(positionFin);
             texte = texteDebut + val + texteFin;
-            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)((?<!\\))\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
                  textCalc.setText(texte);
                  editCalc.setSelection(positionDebut + val.length());
+                btnEgalTemp();
              }
 
         }
@@ -625,9 +580,11 @@ public class MainActivity extends AppCompatActivity  {
         {
             texte = textCalc.getText().toString() + val;
 
-            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
+            if( texte.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)((?<!\\))\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$")) {
 
                 textCalc.setText(texte);
+                btnEgalTemp();
+
             }
         }
     }

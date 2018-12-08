@@ -37,13 +37,10 @@ import com.googlecode.tesseract.android.TessBaseAPI;
 
 public class CameraActivity extends AppCompatActivity {
 
-    public static final String PACKAGE_NAME = "com.datumdroid.android.ocr.simple";
     public static final String DATA_PATH = Environment
             .getExternalStorageDirectory().toString() + "/calcul/";
 
-    // You should have the trained data file in assets folder
-    // You can get them at:
-    // https://github.com/tesseract-ocr/tessdata
+
     public static final String lang = "eng";
 
     private static final String TAG = "CameraActivity.java";
@@ -87,28 +84,20 @@ public class CameraActivity extends AppCompatActivity {
 
         }
 
-        // lang.traineddata file with the app (in assets folder)
-        // You can get them at:
-        // http://code.google.com/p/tesseract-ocr/downloads/list
-        // This area needs work and optimization
         if (!(new File(DATA_PATH + "tessdata/" + lang + ".traineddata")).exists()) {
             try {
 
                 AssetManager assetManager = getAssets();
                 InputStream in = assetManager.open("tessdata/" + lang + ".traineddata");
-                //GZIPInputStream gin = new GZIPInputStream(in);
                 OutputStream out = new FileOutputStream(DATA_PATH
                         + "tessdata/" + lang + ".traineddata");
 
-                // Transfer bytes from in to out
                 byte[] buf = new byte[1024];
                 int len;
-                //while ((lenf = gin.read(buff)) > 0) {
                 while ((len = in.read(buf)) > 0) {
                     out.write(buf, 0, len);
                 }
                 in.close();
-                //gin.close();
                 out.close();
 
                 Log.v(TAG, "Copied " + lang + " traineddata");
@@ -119,11 +108,7 @@ public class CameraActivity extends AppCompatActivity {
 
 
 
-        // _image = (ImageView) findViewById(R.id.image);
         _field = (TextView) findViewById(R.id.field);
-       // _button = (Button) findViewById(R.id.button);
-        //_button.setOnClickListener(new ButtonClickHandler());
-
         _path = DATA_PATH + "ocr.jpg";
         startCameraActivity();
 
@@ -133,12 +118,10 @@ public class CameraActivity extends AppCompatActivity {
         public void btnOcr (View view) {
             Log.v(TAG, "Starting Camera app");
 
-
             startCameraActivity();
         }
 
-    // Simple android photo capture:
-    // http://labs.makemachine.net/2010/03/simple-android-photo-capture/
+
 
     protected void startCameraActivity() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -153,7 +136,6 @@ public class CameraActivity extends AppCompatActivity {
 
 
                 File file = new File(_path);
-                //Uri outputFileUri = Uri.fromFile(file);
                 Uri outputFileUri = FileProvider.getUriForFile(this, "com.example.samsung.calcul.fileprovider", file);
                 Log.v(TAG, "uri " + outputFileUri);
 
@@ -170,7 +152,6 @@ public class CameraActivity extends AppCompatActivity {
 
             }
         } else {
-            // Request permission from the user
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
             onBackPressed();
@@ -255,26 +236,27 @@ public class CameraActivity extends AppCompatActivity {
 
             if (rotate != 0) {
 
-                // Getting width & height of the given image.
                 int w = bitmap.getWidth();
                 int h = bitmap.getHeight();
 
-                // Setting pre rotate
                 Matrix mtx = new Matrix();
                 mtx.preRotate(rotate);
 
-                // Rotating Bitmap
                 bitmap = Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, false);
             }
 
-            // Convert to ARGB_8888, required by tess
             bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
 
         } catch (IOException e) {
             Log.e(TAG, "Couldn't correct orientation: " + e.toString());
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Expression non reconnue !",
+                    Toast.LENGTH_SHORT);
+
+            toast.show();
+            onBackPressed();
         }
 
-        // _image.setImageBitmap( bitmap );
 
         Log.v(TAG, "Before baseApi");
 
@@ -288,13 +270,9 @@ public class CameraActivity extends AppCompatActivity {
 
         baseApi.end();
 
-        // You now have the text in recognizedText var, you can do anything with it.
-        // We will display a stripped out trimmed alpha-numeric version of it (if lang is eng)
-        // so that garbage doesn't make it to the display.
 
         Log.v(TAG, "OCRED TEXT: " + recognizedText);
 
-        //if ( lang.equalsIgnoreCase("eng") ) {
         recognizedText = recognizedText.replaceAll("[x]+", "*");
         recognizedText = recognizedText.replaceAll("[÷]+", "/");
         recognizedText = recognizedText.replaceAll("[^0-9+\\-*/.]+", "");
@@ -306,18 +284,16 @@ public class CameraActivity extends AppCompatActivity {
         recognizedText = recognizedText.trim();
         Log.v(TAG, "OCRED after 2: " + recognizedText);
 
-        if ( recognizedText.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)\\)*(\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$") ) {
+        if ( recognizedText.matches("^(-?([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(+)*-?(\\d*|\\d+(\\.\\d*)?|pi|e)((?<!\\))\\d\\)*(([+-]|[*#!/%^]-?)(([a-zA-Z]*|[a-zA-Z]+[0-9]*)\\(-?)*(\\d*|\\d+(\\.\\d*)?|pi|e))?)*$") ) {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPref.edit();
-            //String calcul = sharedPref.getString("calcul", textCalc.getText().toString());
             String calcul = "";
             editor.putString("resultat", "0");
             editor.putString("calcul", calcul + recognizedText);
             editor.apply();
             onBackPressed();
-           // _field.setText(_field.getText().toString().length() == 0 ? recognizedText : _field.getText() + " " + recognizedText);
-            //_field.setSelection(_field.getText().toString().length());
+
         }
         else{
 
@@ -329,7 +305,6 @@ public class CameraActivity extends AppCompatActivity {
             onBackPressed();
         }
 
-        // Cycle done.
     }
 
 

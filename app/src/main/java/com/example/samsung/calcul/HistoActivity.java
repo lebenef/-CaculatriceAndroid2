@@ -1,8 +1,6 @@
 package com.example.samsung.calcul;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -39,27 +37,19 @@ import com.google.android.gms.drive.CreateFileActivityOptions;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveContents;
-import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.drive.MetadataChangeSet;
-import com.google.android.gms.drive.OpenFileActivityOptions;
 import com.google.android.gms.tasks.Task;
 
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -168,10 +158,6 @@ public class HistoActivity extends AppCompatActivity  {
 
              int id = Integer.valueOf(idString);
 
-            //View view = (View)adapter.getItem(position);
-            //final TextView idString = view.findViewById(R.id.itemId);
-            //int id = Integer.valueOf(idString.getText().toString());
-
 
             switch (index) {
                 case 0:
@@ -186,7 +172,6 @@ public class HistoActivity extends AppCompatActivity  {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_histo, menu);
         return true;
     }
@@ -225,7 +210,6 @@ public class HistoActivity extends AppCompatActivity  {
 
     public void save() throws IOException {
 
-        // verifyStoragePermissions(this);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
 
 
@@ -303,10 +287,7 @@ public class HistoActivity extends AppCompatActivity  {
         }
     }
 
-    /**
-     * Continues the sign-in process, initializing the Drive clients with the current
-     * user's account.
-     */
+
     private void initializeDriveClient(GoogleSignInAccount signInAccount) {
         mDriveClient = Drive.getDriveClient(getApplicationContext(), signInAccount);
         mDriveResourceClient = Drive.getDriveResourceClient(getApplicationContext(), signInAccount);
@@ -317,7 +298,6 @@ public class HistoActivity extends AppCompatActivity  {
     }
 
     private void createFileWithIntent() {
-        // [START drive_android_create_file_with_intent]
         Task<DriveContents> createContentsTask = getDriveResourceClient().createContents();
         createContentsTask
                 .continueWithTask(task -> {
@@ -329,7 +309,6 @@ public class HistoActivity extends AppCompatActivity  {
 
                             byte[] data = new byte[1024];
                             while (inputStream.read(data) != -1) {
-                                //Reading data from local storage and writing to google drive
                                 outputStream.write(data);
                             }
                             inputStream.close();
