@@ -17,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -53,6 +55,7 @@ public class MainActivity extends AppCompatActivity  {
     private Long timer;
     int positionDebut;
     int positionFin ;
+    Animation anim;
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -160,6 +163,11 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void btnC(View view) {
+        anim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.bounce);
+
+        textResult.startAnimation(anim);
+        textCalc.startAnimation(anim);
+
         textResult.setText("");
         textCalc.setText("");
 
@@ -506,7 +514,10 @@ public class MainActivity extends AppCompatActivity  {
                 executor.execute(() -> bdd.data().insertData(data));
                 textCalc.setText("");
                 String rs = resultString.replaceAll("\\s+","");
+                anim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);
+                textCalc.startAnimation(anim);
                 ajoutCalc(rs);
+
                 textResult.setText("");
 
 
